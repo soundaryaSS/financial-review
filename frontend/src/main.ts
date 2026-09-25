@@ -30,7 +30,7 @@ import { renderVarianceView } from './varianceView';
 import { renderReviewQueueView } from './reviewQueueView';
 import { renderLedgerView } from './ledgerView';
 import { renderAnalystView } from './analystView';
-import { formatCurrency, getConfidenceBadge } from './utils';
+import { formatCurrency, getConfidenceBadge, getCurrency, setCurrency } from './utils';
 
 // Application State
 let currentTab: 'pnl' | 'variance' | 'review' | 'ledger' | 'analyst' = 'pnl';
@@ -135,12 +135,33 @@ async function loadAllData() {
   }
 }
 
+function updateCurrencyUI() {
+  const currentCurr = getCurrency();
+  const usdBtn = document.getElementById('currency-usd-btn');
+  const inrBtn = document.getElementById('currency-inr-btn');
+  if (usdBtn && inrBtn) {
+    if (currentCurr === 'INR') {
+      inrBtn.className = 'px-2.5 py-1 rounded transition-all text-emerald-400 bg-slate-800 shadow-sm font-bold';
+      usdBtn.className = 'px-2.5 py-1 rounded transition-all text-slate-400 hover:text-slate-200';
+    } else {
+      usdBtn.className = 'px-2.5 py-1 rounded transition-all text-emerald-400 bg-slate-800 shadow-sm font-bold';
+      inrBtn.className = 'px-2.5 py-1 rounded transition-all text-slate-400 hover:text-slate-200';
+    }
+  }
+}
+
 // Ingestion and Reset Handlers
 async function handleFileUpload(file: File) {
   try {
     showToast('Ingesting and classifying bank transactions...');
     const res = await uploadTransactionsCSV(file);
-    showToast(`Successfully classified ${res.count} transactions!`);
+    if ((res as any).detected_currency === 'INR') {
+      setCurrency('INR');
+      updateCurrencyUI();
+      showToast(`Detected Indian Rupees (₹) in CSV! Classified ${res.count} transactions.`);
+    } else {
+      showToast(`Successfully classified ${res.count} transactions!`);
+    }
     await loadAllData();
   } catch (err: any) {
     console.error(err);
@@ -626,5 +647,21 @@ globalCsvInput?.addEventListener('change', e => {
 const globalResetBtn = document.getElementById('global-reset-btn');
 globalResetBtn?.addEventListener('click', handleResetToBlank);
 
+// Currency Switcher Listeners ($ USD vs ₹ INR)
+document.getElementById('currency-usd-btn')?.addEventListener('click', () => {
+  setCurrency('USD');
+  updateCurrencyUI();
+  showToast('Currency set to US Dollars ($)');
+  renderCurrentTab();
+});
+
+document.getElementById('currency-inr-btn')?.addEventListener('click', () => {
+  setCurrency('INR');
+  updateCurrencyUI();
+  showToast('Currency set to Indian Rupees (₹)');
+  renderCurrentTab();
+});
+
 // Boot
+updateCurrencyUI();
 loadAllData();

@@ -47,6 +47,16 @@
             <span>✕ Reset</span>
           </button>
 
+          <!-- Currency Switcher Toggle: USD ($) vs INR (₹) -->
+          <div class="flex items-center bg-slate-900 border border-slate-700/80 rounded-lg p-0.5 text-xs font-semibold">
+            <button id="currency-usd-btn" title="Display in US Dollars ($)" class="px-2.5 py-1 rounded transition-all text-emerald-400 bg-slate-800 shadow-sm">
+              $ USD
+            </button>
+            <button id="currency-inr-btn" title="Display in Indian Rupees (₹)" class="px-2.5 py-1 rounded transition-all text-slate-400 hover:text-slate-200">
+              ₹ INR
+            </button>
+          </div>
+
           <!-- Status Indicator Pill -->
           <div class="hidden md:flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-lg border border-slate-800/80 text-xs">
             <span id="header-status-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>

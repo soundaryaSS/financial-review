@@ -204,6 +204,8 @@ async def upload_csv_file(file: UploadFile = File(...)):
     
     new_txs: List[Transaction] = []
     idx = 1
+    detected_currency = "USD"
+
     for row in reader:
         # Standardize headers
         tx_id_raw = row.get("Transaction ID") or row.get("id") or f"UP-{idx:04d}"
@@ -212,8 +214,11 @@ async def upload_csv_file(file: UploadFile = File(...)):
         if counterparty and counterparty not in desc:
             desc = f"{desc} ({counterparty})"
 
-        amt_str = row.get("amount") or row.get("Amount") or "0"
-        clean_num_str = str(amt_str).replace("$", "").replace(",", "").strip()
+        amt_str = str(row.get("amount") or row.get("Amount") or "0")
+        if "₹" in amt_str or "rs." in amt_str.lower() or "rs" in amt_str.lower() or "inr" in amt_str.lower() or "rupee" in amt_str.lower():
+            detected_currency = "INR"
+
+        clean_num_str = amt_str.replace("$", "").replace("₹", "").replace("Rs.", "").replace("Rs", "").replace("rs", "").replace("INR", "").replace("inr", "").replace(",", "").strip()
         num_val = float(clean_num_str)
         amt = abs(num_val)
         dt = row.get("date") or row.get("Date") or "2026-03-01"
@@ -260,7 +265,8 @@ async def upload_csv_file(file: UploadFile = File(...)):
 
     return {
         "message": f"Successfully ingested and classified {len(new_txs)} transactions",
-        "count": len(new_txs)
+        "count": len(new_txs),
+        "detected_currency": detected_currency
     }
 
 @app.post("/api/reset")

@@ -2,7 +2,37 @@
  * Formatting and DOM Utility Helpers
  */
 
+export type CurrencyCode = 'USD' | 'INR';
+
+let activeCurrency: CurrencyCode = 'USD';
+
+export function setCurrency(curr: CurrencyCode) {
+  activeCurrency = curr;
+  try {
+    localStorage.setItem('finz_currency', curr);
+  } catch (e) {}
+}
+
+export function getCurrency(): CurrencyCode {
+  try {
+    const saved = localStorage.getItem('finz_currency') as CurrencyCode;
+    if (saved === 'INR' || saved === 'USD') {
+      activeCurrency = saved;
+    }
+  } catch (e) {}
+  return activeCurrency;
+}
+
 export function formatCurrency(amount: number): string {
+  const curr = getCurrency();
+  if (curr === 'INR') {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(amount);
+  }
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
