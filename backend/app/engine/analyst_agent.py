@@ -35,7 +35,34 @@ def answer_financial_query_deterministic(
     and dynamic inquiries with 100% precision and exact transaction citations.
     """
     q = user_query.lower().strip()
-    tx_by_id = {tx.id: tx for tx in transactions}
+    # -------------------------------------------------------------
+    # 0. GREETINGS & CONVERSATIONAL STARTERS ("hi", "hello", "hey", "hai", etc.)
+    # -------------------------------------------------------------
+    if re.match(r'^(hi|hello|hey|hai|howdy|good\s+morning|good\s+afternoon|good\s+evening|greetings|who\s+are\s+you)\b', q) or q in ["hi", "hello", "hey", "hai", "help"]:
+        return ChatResponse(
+            answer=(
+                "Hello! 👋 I am the **FINZ AI Financial Analyst**, your executive copilot for NYC Restaurant Co.\n\n"
+                "I am directly grounded in our deterministic ledger of **181 audited transactions** across Q1 2026. "
+                "I can analyze trends, calculate exact figures, explain variances, or trace specific vendors for you.\n\n"
+                "### Questions you can ask me:\n"
+                "- 🥩 **Food Costs:** *'What drove the increase in food costs in March?'*\n"
+                "- 📈 **Profitability:** *'Why did operating profit surge in March?'*\n"
+                "- 🏢 **Rent & Overhead:** *'What is our monthly rent and who is the landlord?'*\n"
+                "- ⚡ **Bills & Utilities:** *'How much did we spend on utilities?'*\n"
+                "- 🚚 **Vendors:** *'How much did we pay Sysco or US Foods?'*\n"
+                "- 💰 **Margins:** *'What was our gross margin and EBITDA margin?'*\n"
+                "- ⚠️ **Audit:** *'What items require human review and why?'*\n\n"
+                "What would you like to explore?"
+            ),
+            citations=extract_citations_from_transactions(transactions[:3], limit=3),
+            suggested_followups=[
+                "What drove the increase in food costs in March?",
+                "Why did operating profit surge in March?",
+                "What is our monthly rent?",
+                "What items require human review?"
+            ],
+            queried_tools=["analyst.greeting()"]
+        )
 
     # -------------------------------------------------------------
     # 1. SPECIFIC DOLLAR AMOUNT QUERIES (e.g., "$7,800", "7800", "6200", "9000", "4650")
