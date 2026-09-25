@@ -10,7 +10,9 @@ env/
 
 # Node
 node_modules/
-dist/
+# dist is unignored for frontend so Python cloud hosts can serve UI directly
+!frontend/dist/
+!frontend/dist/**
 .DS_Store
 
 # OS
