@@ -136,6 +136,7 @@ def answer_financial_query_deterministic(
             if "january" in q: periods.append("2026-01")
             if "february" in q: periods.append("2026-02")
             if "march" in q: periods.append("2026-03")
+            if "april" in q: periods.append("2026-04")
             
         if len(periods) == 1:
             p = periods[0]
@@ -154,6 +155,13 @@ def answer_financial_query_deterministic(
                     answer=answer,
                     citations=citations,
                     suggested_followups=["Why did profit change compared to the previous month?"],
+                    queried_tools=[f"deterministic_pnl.get_summary('{p}')"]
+                )
+            else:
+                return ChatResponse(
+                    answer=f"I couldn't find any financial summary for **{p}**. Please ensure the ledger data for that month is uploaded.",
+                    citations=[],
+                    suggested_followups=["What was our revenue in March?"],
                     queried_tools=[f"deterministic_pnl.get_summary('{p}')"]
                 )
         elif len(periods) >= 2:
@@ -180,32 +188,39 @@ def answer_financial_query_deterministic(
                     suggested_followups=["What drove the increase in food costs?", f"What was our revenue in {p2}?"],
                     queried_tools=[f"variance_engine.compare_periods('{p1}', '{p2}')"]
                 )
+            else:
+                return ChatResponse(
+                    answer=f"I couldn't find complete data for both **{p1}** and **{p2}** to compare them.",
+                    citations=[],
+                    suggested_followups=["What was our revenue in March?"],
+                    queried_tools=[f"variance_engine.compare_periods('{p1}', '{p2}')"]
+                )
 
         # Fallback to the original hardcoded explanation if no explicit periods matched but 'surge/change' mentioned
         elif ("surge" in q or "increase" in q or "why" in q or "change" in q or "grow" in q or "between february" in q):
             feb = pnl.monthly_summaries.get("2026-02")
             mar = pnl.monthly_summaries.get("2026-03")
-        citations = extract_citations_from_transactions(
-            [t for t in transactions if t.id in ["T1131", "T1137", "T1179", "T1090"]], limit=4
-        )
-        answer = (
-            "Operating profit (EBITDA) surged dramatically from **$9,912.36 (7.7% margin) in February** to **$38,427.74 (23.4% margin) in March**—a **+$28,515.38 (+287.7%) increase**.\n\n"
-            "### Key Profit Drivers:\n"
-            "1. **High Operating Leverage on Revenue Growth (+27.2%):**\n"
-            "   - Total revenue grew by **+$35,090.22** (from $128,850.15 to $163,940.37) driven by strong St. Patrick's Day bar volume and corporate catering.\n\n"
-            "2. **Fixed Overhead Invariance:**\n"
-            "   - **Rent remained strictly flat at $9,000.00**.\n"
-            "   - **Management salary remained flat at $6,500.00**.\n"
-            "   - Utilities and POS software rose only marginally (+4.2%).\n\n"
-            "3. **Flow-Through Efficiency:**\n"
-            "   - Because fixed overhead was already covered by February's baseline revenue, approximately **81.3% of the incremental gross profit flowed directly to EBITDA**."
-        )
-        return ChatResponse(
-            answer=answer,
-            citations=citations,
-            suggested_followups=["What drove the increase in food costs?", "What was our revenue in March?", "Which transactions need my attention?"],
-            queried_tools=["variance_engine.bridge_ebitda('2026-02', '2026-03')", "deterministic_pnl.get_operating_leverage()"]
-        )
+            citations = extract_citations_from_transactions(
+                [t for t in transactions if t.id in ["T1131", "T1137", "T1179", "T1090"]], limit=4
+            )
+            answer = (
+                "Operating profit (EBITDA) surged dramatically from **$9,912.36 (7.7% margin) in February** to **$38,427.74 (23.4% margin) in March**—a **+$28,515.38 (+287.7%) increase**.\n\n"
+                "### Key Profit Drivers:\n"
+                "1. **High Operating Leverage on Revenue Growth (+27.2%):**\n"
+                "   - Total revenue grew by **+$35,090.22** (from $128,850.15 to $163,940.37) driven by strong St. Patrick's Day bar volume and corporate catering.\n\n"
+                "2. **Fixed Overhead Invariance:**\n"
+                "   - **Rent remained strictly flat at $9,000.00**.\n"
+                "   - **Management salary remained flat at $6,500.00**.\n"
+                "   - Utilities and POS software rose only marginally (+4.2%).\n\n"
+                "3. **Flow-Through Efficiency:**\n"
+                "   - Because fixed overhead was already covered by February's baseline revenue, approximately **81.3% of the incremental gross profit flowed directly to EBITDA**."
+            )
+            return ChatResponse(
+                answer=answer,
+                citations=citations,
+                suggested_followups=["What drove the increase in food costs?", "What was our revenue in March?", "Which transactions need my attention?"],
+                queried_tools=["variance_engine.bridge_ebitda('2026-02', '2026-03')", "deterministic_pnl.get_operating_leverage()"]
+            )
 
     # -------------------------------------------------------------
     # 4. CHALLENGE CORE QUESTION: Items Requiring Human Review
