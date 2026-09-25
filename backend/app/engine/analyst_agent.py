@@ -125,11 +125,66 @@ def answer_financial_query_deterministic(
         )
 
     # -------------------------------------------------------------
-    # 3. CHALLENGE CORE QUESTION: Operating Profit Surge in March
+    # 3. CHALLENGE CORE QUESTION: Operating Profit Surge in March / Dynamic Compare
     # -------------------------------------------------------------
-    if ("operating profit" in q or "ebitda" in q or "profit" in q) and ("surge" in q or "increase" in q or "why" in q or "change" in q or "grow" in q or "between february" in q):
-        feb = pnl.monthly_summaries.get("2026-02")
-        mar = pnl.monthly_summaries.get("2026-03")
+    if ("operating profit" in q or "ebitda" in q or "profit" in q or "gross profit" in q):
+        # Find explicit months in query (e.g. 2026-01, 2026-02)
+        periods = re.findall(r"2026-\d{2}", q)
+        
+        # fallback to word months
+        if not periods:
+            if "january" in q: periods.append("2026-01")
+            if "february" in q: periods.append("2026-02")
+            if "march" in q: periods.append("2026-03")
+            
+        if len(periods) == 1:
+            p = periods[0]
+            summary = pnl.monthly_summaries.get(p)
+            if summary:
+                citations = extract_citations_from_transactions(
+                    [t for t in transactions if t.date.startswith(p)], limit=3
+                )
+                answer = (
+                    f"In **{p}**, the financial results were:\n\n"
+                    f"- **Gross Profit:** ${summary.gross_profit:,.2f}\n"
+                    f"- **Operating Profit (EBITDA):** ${summary.operating_profit:,.2f}\n"
+                    f"- **Revenue:** ${summary.revenue:,.2f}\n"
+                )
+                return ChatResponse(
+                    answer=answer,
+                    citations=citations,
+                    suggested_followups=["Why did profit change compared to the previous month?"],
+                    queried_tools=[f"deterministic_pnl.get_summary('{p}')"]
+                )
+        elif len(periods) >= 2:
+            p1, p2 = periods[0], periods[1]
+            sum1 = pnl.monthly_summaries.get(p1)
+            sum2 = pnl.monthly_summaries.get(p2)
+            if sum1 and sum2:
+                delta_op = sum2.operating_profit - sum1.operating_profit
+                delta_gp = sum2.gross_profit - sum1.gross_profit
+                delta_rev = sum2.revenue - sum1.revenue
+                
+                citations = extract_citations_from_transactions(
+                    [t for t in transactions if t.date.startswith(p2) and t.amount > 3000], limit=4
+                )
+                answer = (
+                    f"Comparing **{p1}** to **{p2}**:\n\n"
+                    f"- **Operating Profit (EBITDA)** changed by **${delta_op:+,.2f}** (from ${sum1.operating_profit:,.2f} to ${sum2.operating_profit:,.2f}).\n"
+                    f"- **Gross Profit** changed by **${delta_gp:+,.2f}** (from ${sum1.gross_profit:,.2f} to ${sum2.gross_profit:,.2f}).\n"
+                    f"- **Revenue** changed by **${delta_rev:+,.2f}**.\n"
+                )
+                return ChatResponse(
+                    answer=answer,
+                    citations=citations,
+                    suggested_followups=["What drove the increase in food costs?", f"What was our revenue in {p2}?"],
+                    queried_tools=[f"variance_engine.compare_periods('{p1}', '{p2}')"]
+                )
+
+        # Fallback to the original hardcoded explanation if no explicit periods matched but 'surge/change' mentioned
+        elif ("surge" in q or "increase" in q or "why" in q or "change" in q or "grow" in q or "between february" in q):
+            feb = pnl.monthly_summaries.get("2026-02")
+            mar = pnl.monthly_summaries.get("2026-03")
         citations = extract_citations_from_transactions(
             [t for t in transactions if t.id in ["T1131", "T1137", "T1179", "T1090"]], limit=4
         )
