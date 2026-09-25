@@ -12,7 +12,10 @@ import {
   ChatMessage
 } from './types';
 
-const API_BASE = 'http://localhost:8000/api';
+// Dynamic API BASE: Uses relative '/api' in production or when served by FastAPI,
+// or localhost:8000 during standalone frontend Vite dev (port 5173).
+const isViteDev = window.location.port === '5173';
+const API_BASE = isViteDev ? 'http://localhost:8000/api' : '/api';
 
 export async function fetchHealth() {
   const res = await fetch(`${API_BASE}/health`);
