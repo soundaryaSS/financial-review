@@ -12,8 +12,28 @@ from app.models.financial import Transaction, PnLStatement, PnLLineItem, Monthly
 def calculate_pnl(transactions: List[Transaction]) -> PnLStatement:
     """
     Computes a multi-period P&L statement from a list of transactions.
-    Separates P&L from Non-P&L items deterministically.
     """
+    if not transactions:
+        return PnLStatement(
+            periods=[],
+            revenue_items=[],
+            cogs_items=[],
+            payroll_items=[],
+            opex_items=[],
+            non_pnl_items=[],
+            monthly_summaries={},
+            totals={
+                "revenue": 0.0,
+                "cogs": 0.0,
+                "gross_profit": 0.0,
+                "payroll": 0.0,
+                "opex": 0.0,
+                "operating_profit": 0.0
+            },
+            generated_at=datetime.now().isoformat(),
+            calculation_engine="Deterministic-Decimal-Ledger (v1.0)"
+        )
+
     # 1. Identify distinct periods (sorted YYYY-MM)
     periods_set = set()
     for tx in transactions:
@@ -21,7 +41,7 @@ def calculate_pnl(transactions: List[Transaction]) -> PnLStatement:
         periods_set.add(period)
     periods = sorted(list(periods_set))
     if not periods:
-        periods = [datetime.now().strftime("%Y-%m")]
+        periods = []
 
     # 2. Aggregation accumulators
     # category -> subcategory -> period -> sum

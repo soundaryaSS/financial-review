@@ -61,8 +61,12 @@ export function renderLedgerView(
         .join('')
     : `
       <tr>
-        <td colspan="9" class="py-8 text-center text-xs text-slate-500">
-          No transactions match your active search and filter criteria.
+        <td colspan="9" class="py-16 text-center text-xs text-slate-500">
+          <div class="flex flex-col items-center justify-center gap-2">
+            <span class="text-3xl">📭</span>
+            <span class="font-semibold text-slate-300 text-sm">No Transactions in Ledger</span>
+            <span class="text-slate-500 max-w-sm">The ledger is empty. Click "Ingest CSV" above or "Load Benchmark" to populate transactions.</span>
+          </div>
         </td>
       </tr>
     `;
@@ -87,14 +91,19 @@ export function renderLedgerView(
 
         <div class="flex items-center gap-2">
           <!-- Ingest CSV Button -->
-          <label class="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer transition-all flex items-center gap-1.5 shadow-sm">
+          <label class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-600/20">
             <span>↑ Ingest CSV</span>
             <input type="file" id="csv-upload-input" accept=".csv" class="hidden" />
           </label>
 
-          <!-- Reset Benchmark -->
-          <button id="reset-dataset-btn" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all">
-            ↻ Reset Dataset
+          <!-- Load Benchmark Sample -->
+          <button id="load-benchmark-btn" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all flex items-center gap-1">
+            <span>↻ Load Benchmark</span>
+          </button>
+
+          <!-- Reset to Blank -->
+          <button id="reset-dataset-btn" title="Clear all data and return to blank ledger" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 transition-all flex items-center gap-1">
+            <span>✕ Reset to Blank</span>
           </button>
         </div>
       </div>

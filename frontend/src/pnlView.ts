@@ -10,7 +10,43 @@ export function renderPnLView(
   pnl: PnLStatement,
   onInspectLineItem: (item: PnLLineItem) => void
 ): string {
-  const periods = pnl.periods;
+  const periods = pnl?.periods || [];
+
+  if (!periods.length || (!pnl.revenue_items?.length && !pnl.cogs_items?.length && !pnl.payroll_items?.length && !pnl.opex_items?.length)) {
+    return `
+      <div class="space-y-6">
+        <div class="border-2 border-dashed border-slate-800 rounded-2xl p-12 text-center bg-slate-900/30 flex flex-col items-center justify-center max-w-2xl mx-auto my-8">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-3xl mb-4 text-emerald-400">
+            📄
+          </div>
+          <h2 class="text-xl font-bold text-slate-100">No Financial Ledger Data Loaded</h2>
+          <p class="text-sm text-slate-400 mt-2 max-w-md">
+            The ledger is currently blank. Upload your raw bank transaction CSV to deterministically calculate the Profit & Loss statement, generate trajectory charts, and screen review items.
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <label class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-lg shadow-emerald-600/25 cursor-pointer flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              <span>Upload Bank Transactions (.CSV)</span>
+              <input type="file" id="pnl-csv-upload-input" accept=".csv" class="hidden" />
+            </label>
+
+            <button id="pnl-load-benchmark-btn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs border border-slate-700 transition-all flex items-center gap-1.5">
+              <span>↻ Load NYC Restaurant Sample (181 Txs)</span>
+            </button>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-800/80 w-full flex items-center justify-around text-xs text-slate-500">
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span> Zero Hallucination Math</span>
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span> GAAP Restaurant Taxonomy</span>
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span> CapEx & Pass-Through Screening</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
 
   const headerCells = periods
     .map(p => `<th class="py-3 px-4 text-right font-semibold text-slate-300 uppercase tracking-wider text-xs">${p}</th>`)

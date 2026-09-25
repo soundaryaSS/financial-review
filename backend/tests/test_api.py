@@ -13,6 +13,10 @@ from app.main import app
 
 client = TestClient(app)
 
+@pytest.fixture(autouse=True)
+def setup_benchmark():
+    client.post("/api/benchmark")
+
 def test_api_health():
     res = client.get("/api/health")
     assert res.status_code == 200

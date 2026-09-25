@@ -98,3 +98,9 @@ export async function resetBenchmarkDataset(): Promise<{ message: string; count:
   if (!res.ok) throw new Error('Failed to reset dataset');
   return res.json();
 }
+
+export async function loadBenchmarkDataset(): Promise<{ message: string; count: number }> {
+  const res = await fetch(`${API_BASE}/benchmark`, { method: 'POST' });
+  if (!res.ok) throw new Error('Failed to load benchmark dataset');
+  return res.json();
+}

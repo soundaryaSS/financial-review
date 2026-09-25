@@ -1,41 +1,73 @@
-(function(){const n=document.createElement("link").relList;if(n&&n.supports&&n.supports("modulepreload"))return;for(const s of document.querySelectorAll('link[rel="modulepreload"]'))c(s);new MutationObserver(s=>{for(const o of s)if(o.type==="childList")for(const i of o.addedNodes)i.tagName==="LINK"&&i.rel==="modulepreload"&&c(i)}).observe(document,{childList:!0,subtree:!0});function t(s){const o={};return s.integrity&&(o.integrity=s.integrity),s.referrerPolicy&&(o.referrerPolicy=s.referrerPolicy),s.crossOrigin==="use-credentials"?o.credentials="include":s.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function c(s){if(s.ep)return;s.ep=!0;const o=t(s);fetch(s.href,o)}})();const be=window.location.port==="5173",I=be?"http://localhost:8000/api":"/api";async function fe(){const e=await fetch(`${I}/pnl`);if(!e.ok)throw new Error("Failed to load P&L Statement");return e.json()}async function ge(e="2026-02",n="2026-03"){const t=await fetch(`${I}/variances?period_a=${e}&period_b=${n}`);if(!t.ok)throw new Error("Failed to load Variance Analysis");return t.json()}async function ve(){const e=await fetch(`${I}/review-queue`);if(!e.ok)throw new Error("Failed to load Review Queue");return e.json()}async function ye(e){const n=new URLSearchParams,t=await fetch(`${I}/transactions?${n.toString()}`);if(!t.ok)throw new Error("Failed to load Transactions");return t.json()}async function Q(e,n){const t=await fetch(`${I}/transactions/${e}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(n)});if(!t.ok)throw new Error(`Failed to update transaction ${e}`);return t.json()}async function he(e,n=[]){const t=await fetch(`${I}/chat`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:e,conversation_history:n})});if(!t.ok)throw new Error("Failed to get answer from AI Analyst");return t.json()}async function we(e){const n=new FormData;n.append("file",e);const t=await fetch(`${I}/upload`,{method:"POST",body:n});if(!t.ok)throw new Error("Failed to upload CSV file");return t.json()}async function $e(){const e=await fetch(`${I}/reset`,{method:"POST"});if(!e.ok)throw new Error("Failed to reset dataset");return e.json()}function m(e){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(e)}function X(e){return`${e>0?"+":""}${e.toFixed(1)}%`}function K(e){const n=Math.round(e*100);return e>=.9?`<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${n}% Confident</span>`:e>=.7?`<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">${n}% Uncertain</span>`:`<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">${n}% Review Req.</span>`}function Ee(e){return e==="high"?'<span class="px-2 py-0.5 text-xs font-semibold rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">HIGH ATTENTION</span>':e==="medium"?'<span class="px-2 py-0.5 text-xs font-semibold rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">MEDIUM REVIEW</span>':'<span class="px-2 py-0.5 text-xs font-semibold rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">LOW JUDGMENT</span>'}function Le(e,n){const t=e.periods,c=t.map(r=>`<th class="py-3 px-4 text-right font-semibold text-slate-300 uppercase tracking-wider text-xs">${r}</th>`).join("");function s(r,d,y){return r.length?r.map(v=>{const h=t.map(E=>{const S=v.monthly_amounts[E]||0,k=S<0||v.name.toLowerCase().includes("refund");return`
-              <td class="py-2.5 px-4 text-right text-xs font-mono ${k?"text-rose-400":"text-slate-300"}">
-                ${k?`-${m(Math.abs(S))}`:m(S)}
+(function(){const a=document.createElement("link").relList;if(a&&a.supports&&a.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))p(t);new MutationObserver(t=>{for(const r of t)if(r.type==="childList")for(const o of r.addedNodes)o.tagName==="LINK"&&o.rel==="modulepreload"&&p(o)}).observe(document,{childList:!0,subtree:!0});function s(t){const r={};return t.integrity&&(r.integrity=t.integrity),t.referrerPolicy&&(r.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?r.credentials="include":t.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function p(t){if(t.ep)return;t.ep=!0;const r=s(t);fetch(t.href,r)}})();const Le=window.location.port==="5173",L=Le?"http://localhost:8000/api":"/api";async function ke(){const e=await fetch(`${L}/pnl`);if(!e.ok)throw new Error("Failed to load P&L Statement");return e.json()}async function Ie(e="2026-02",a="2026-03"){const s=await fetch(`${L}/variances?period_a=${e}&period_b=${a}`);if(!s.ok)throw new Error("Failed to load Variance Analysis");return s.json()}async function Se(){const e=await fetch(`${L}/review-queue`);if(!e.ok)throw new Error("Failed to load Review Queue");return e.json()}async function Ae(e){const a=new URLSearchParams,s=await fetch(`${L}/transactions?${a.toString()}`);if(!s.ok)throw new Error("Failed to load Transactions");return s.json()}async function X(e,a){const s=await fetch(`${L}/transactions/${e}`,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify(a)});if(!s.ok)throw new Error(`Failed to update transaction ${e}`);return s.json()}async function Te(e,a=[]){const s=await fetch(`${L}/chat`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:e,conversation_history:a})});if(!s.ok)throw new Error("Failed to get answer from AI Analyst");return s.json()}async function Ce(e){const a=new FormData;a.append("file",e);const s=await fetch(`${L}/upload`,{method:"POST",body:a});if(!s.ok)throw new Error("Failed to upload CSV file");return s.json()}async function Be(){const e=await fetch(`${L}/reset`,{method:"POST"});if(!e.ok)throw new Error("Failed to reset dataset");return e.json()}async function _e(){const e=await fetch(`${L}/benchmark`,{method:"POST"});if(!e.ok)throw new Error("Failed to load benchmark dataset");return e.json()}function x(e){return new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(e)}function re(e){return`${e>0?"+":""}${e.toFixed(1)}%`}function se(e){const a=Math.round(e*100);return e>=.9?`<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">${a}% Confident</span>`:e>=.7?`<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20">${a}% Uncertain</span>`:`<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20">${a}% Review Req.</span>`}function je(e){return e==="high"?'<span class="px-2 py-0.5 text-xs font-semibold rounded bg-rose-500/20 text-rose-300 border border-rose-500/40">HIGH ATTENTION</span>':e==="medium"?'<span class="px-2 py-0.5 text-xs font-semibold rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">MEDIUM REVIEW</span>':'<span class="px-2 py-0.5 text-xs font-semibold rounded bg-blue-500/20 text-blue-300 border border-blue-500/40">LOW JUDGMENT</span>'}function Pe(e,a){var c,T,j,ne;const s=(e==null?void 0:e.periods)||[];if(!s.length||!((c=e.revenue_items)!=null&&c.length)&&!((T=e.cogs_items)!=null&&T.length)&&!((j=e.payroll_items)!=null&&j.length)&&!((ne=e.opex_items)!=null&&ne.length))return`
+      <div class="space-y-6">
+        <div class="border-2 border-dashed border-slate-800 rounded-2xl p-12 text-center bg-slate-900/30 flex flex-col items-center justify-center max-w-2xl mx-auto my-8">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-3xl mb-4 text-emerald-400">
+            📄
+          </div>
+          <h2 class="text-xl font-bold text-slate-100">No Financial Ledger Data Loaded</h2>
+          <p class="text-sm text-slate-400 mt-2 max-w-md">
+            The ledger is currently blank. Upload your raw bank transaction CSV to deterministically calculate the Profit & Loss statement, generate trajectory charts, and screen review items.
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+            <label class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition-all shadow-lg shadow-emerald-600/25 cursor-pointer flex items-center gap-2">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              <span>Upload Bank Transactions (.CSV)</span>
+              <input type="file" id="pnl-csv-upload-input" accept=".csv" class="hidden" />
+            </label>
+
+            <button id="pnl-load-benchmark-btn" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs border border-slate-700 transition-all flex items-center gap-1.5">
+              <span>↻ Load NYC Restaurant Sample (181 Txs)</span>
+            </button>
+          </div>
+
+          <div class="mt-8 pt-6 border-t border-slate-800/80 w-full flex items-center justify-around text-xs text-slate-500">
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span> Zero Hallucination Math</span>
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span> GAAP Restaurant Taxonomy</span>
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span> CapEx & Pass-Through Screening</span>
+          </div>
+        </div>
+      </div>
+    `;const p=s.map(u=>`<th class="py-3 px-4 text-right font-semibold text-slate-300 uppercase tracking-wider text-xs">${u}</th>`).join("");function t(u,d,$){return u.length?u.map(h=>{const y=s.map(k=>{const C=h.monthly_amounts[k]||0,P=C<0||h.name.toLowerCase().includes("refund");return`
+              <td class="py-2.5 px-4 text-right text-xs font-mono ${P?"text-rose-400":"text-slate-300"}">
+                ${P?`-${x(Math.abs(C))}`:x(C)}
               </td>
             `}).join("");return`
           <tr class="hover:bg-slate-800/60 transition-colors border-b border-slate-800/40 cursor-pointer group line-item-row"
-              data-item-name="${v.name}" data-item-type="${v.account_type}">
+              data-item-name="${h.name}" data-item-type="${h.account_type}">
             <td class="py-2.5 px-4 text-xs font-medium text-slate-200 flex items-center justify-between pl-6">
               <span class="group-hover:text-emerald-400 transition-colors flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full ${y}"></span>
-                <span class="truncate max-w-xs md:max-w-md">${v.name}</span>
+                <span class="w-1.5 h-1.5 rounded-full ${$}"></span>
+                <span class="truncate max-w-xs md:max-w-md">${h.name}</span>
               </span>
               <span class="text-[10px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded group-hover:bg-emerald-950/80 group-hover:text-emerald-300 transition-colors">
-                ${v.transaction_count} txs ↗
+                ${h.transaction_count} txs ↗
               </span>
             </td>
-            ${h}
+            ${y}
             <td class="py-2.5 px-4 text-right text-xs font-mono font-semibold text-slate-100 bg-slate-900/40">
-              ${m(v.total_amount)}
+              ${x(h.total_amount)}
             </td>
           </tr>
-        `}).join(""):`<tr><td colspan="${t.length+2}" class="py-3 px-4 text-xs text-slate-500 italic pl-8">No line items recorded.</td></tr>`}function o(r,d,y,v,h){const E=t.map(S=>{const k=d(S);return`<td class="py-3 px-4 text-right text-xs font-mono font-bold ${h}">${m(k)}</td>`}).join("");return`
-      <tr class="${v} border-t border-b border-slate-700/80">
-        <td class="py-3 px-4 text-xs font-bold uppercase tracking-wider ${h} flex items-center justify-between">
-          <span>${r}</span>
+        `}).join(""):`<tr><td colspan="${s.length+2}" class="py-3 px-4 text-xs text-slate-500 italic pl-8">No line items recorded.</td></tr>`}function r(u,d,$,h,y){const k=s.map(C=>{const P=d(C);return`<td class="py-3 px-4 text-right text-xs font-mono font-bold ${y}">${x(P)}</td>`}).join("");return`
+      <tr class="${h} border-t border-b border-slate-700/80">
+        <td class="py-3 px-4 text-xs font-bold uppercase tracking-wider ${y} flex items-center justify-between">
+          <span>${u}</span>
         </td>
-        ${E}
-        <td class="py-3 px-4 text-right text-xs font-mono font-extrabold ${h} bg-slate-900/80">
-          ${m(y())}
+        ${k}
+        <td class="py-3 px-4 text-right text-xs font-mono font-extrabold ${y} bg-slate-900/80">
+          ${x($())}
         </td>
       </tr>
-    `}function i(r,d){const y=t.map(h=>`<td class="py-2 px-4 text-right text-xs font-mono text-emerald-400/90 font-medium">${d(h).toFixed(1)}%</td>`).join(""),v=t.reduce((h,E)=>h+d(E),0)/t.length;return`
+    `}function o(u,d){const $=s.map(y=>`<td class="py-2 px-4 text-right text-xs font-mono text-emerald-400/90 font-medium">${d(y).toFixed(1)}%</td>`).join(""),h=s.reduce((y,k)=>y+d(k),0)/s.length;return`
       <tr class="bg-slate-950/60 text-slate-400 border-b border-slate-800/80 text-[11px]">
-        <td class="py-2 px-6 italic text-slate-400">${r}</td>
-        ${y}
-        <td class="py-2 px-4 text-right font-mono text-emerald-400 font-semibold bg-slate-950">${v.toFixed(1)}% Avg</td>
+        <td class="py-2 px-6 italic text-slate-400">${u}</td>
+        ${$}
+        <td class="py-2 px-4 text-right font-mono text-emerald-400 font-semibold bg-slate-950">${h.toFixed(1)}% Avg</td>
       </tr>
-    `}const a=e.totals.revenue||1,u=e.totals.gross_profit||0,p=e.totals.operating_profit||0,x=(e.totals.payroll||0)+(e.totals.opex||0),b=(u/a*100).toFixed(1),l=(p/a*100).toFixed(1);return`
+    `}const n=e.totals.revenue||1,m=e.totals.gross_profit||0,b=e.totals.operating_profit||0,l=(e.totals.payroll||0)+(e.totals.opex||0),f=(m/n*100).toFixed(1),i=(b/n*100).toFixed(1);return`
     <div class="space-y-6">
       <!-- Executive Summary Cards -->
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -45,7 +77,7 @@
             <span>Total Revenue (Q1)</span>
             <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[11px] font-semibold">+12.7% MoM</span>
           </div>
-          <div class="text-2xl font-bold font-mono text-emerald-400 mt-2">${m(a)}</div>
+          <div class="text-2xl font-bold font-mono text-emerald-400 mt-2">${x(n)}</div>
           <div class="text-[11px] text-slate-400 mt-1">
             Food Sales, Bar, Catering & Delivery
           </div>
@@ -55,9 +87,9 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition-all">
           <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
             <span>Gross Profit</span>
-            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[11px] font-semibold">${b}% Margin</span>
+            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[11px] font-semibold">${f}% Margin</span>
           </div>
-          <div class="text-2xl font-bold font-mono text-slate-100 mt-2">${m(u)}</div>
+          <div class="text-2xl font-bold font-mono text-slate-100 mt-2">${x(m)}</div>
           <div class="text-[11px] text-slate-400 mt-1">
             Revenue minus Direct Food & Beverage COGS
           </div>
@@ -67,9 +99,9 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition-all">
           <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
             <span>Total Payroll & OpEx</span>
-            <span class="text-slate-400 text-[11px] font-semibold">${(x/a*100).toFixed(1)}% of Rev</span>
+            <span class="text-slate-400 text-[11px] font-semibold">${(l/n*100).toFixed(1)}% of Rev</span>
           </div>
-          <div class="text-2xl font-bold font-mono text-amber-300 mt-2">${m(x)}</div>
+          <div class="text-2xl font-bold font-mono text-amber-300 mt-2">${x(l)}</div>
           <div class="text-[11px] text-slate-400 mt-1">
             Kitchen Wages, Manager Salary & Rent ($9k)
           </div>
@@ -79,9 +111,9 @@
         <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition-all">
           <div class="flex items-center justify-between text-xs text-slate-400 font-medium">
             <span>Operating Profit (EBITDA)</span>
-            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[11px] font-semibold">${l}% Net</span>
+            <span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-[11px] font-semibold">${i}% Net</span>
           </div>
-          <div class="text-2xl font-bold font-mono text-emerald-300 mt-2">${m(p)}</div>
+          <div class="text-2xl font-bold font-mono text-emerald-300 mt-2">${x(b)}</div>
           <div class="text-[11px] text-emerald-400/80 mt-1 font-medium">
             Profitable across all 3 months
           </div>
@@ -123,13 +155,13 @@
 
         <!-- Chart Grid Bars -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
-          ${t.map(r=>{const d=e.monthly_summaries[r];if(!d)return"";const y=18e4,v=Math.min(100,Math.round(d.revenue/y*100)),h=Math.min(100,Math.round(d.cogs/y*100)),E=Math.min(100,Math.round(d.payroll/y*100)),S=Math.min(100,Math.round(d.opex/y*100));return`
+          ${s.map(u=>{const d=e.monthly_summaries[u];if(!d)return"";const $=18e4,h=Math.min(100,Math.round(d.revenue/$*100)),y=Math.min(100,Math.round(d.cogs/$*100)),k=Math.min(100,Math.round(d.payroll/$*100)),C=Math.min(100,Math.round(d.opex/$*100));return`
                 <div class="bg-slate-950/70 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between hover:border-slate-700 transition-all">
                   <!-- Header with EBITDA Pill -->
                   <div class="flex items-center justify-between mb-3">
-                    <span class="font-mono text-sm font-bold text-slate-100">${r}</span>
+                    <span class="font-mono text-sm font-bold text-slate-100">${u}</span>
                     <span class="text-[11px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 font-bold border border-emerald-500/30">
-                      ${d.operating_margin_pct.toFixed(1)}% Margin · ${m(d.operating_profit)}
+                      ${d.operating_margin_pct.toFixed(1)}% Margin · ${x(d.operating_profit)}
                     </span>
                   </div>
 
@@ -138,43 +170,43 @@
                     <!-- Revenue Bar -->
                     <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group relative cursor-pointer">
                       <div class="text-[10px] font-mono text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity absolute -top-5">
-                        ${m(d.revenue)}
+                        ${x(d.revenue)}
                       </div>
-                      <div class="w-full bg-emerald-500/80 hover:bg-emerald-400 transition-all rounded-t" style="height: ${v}%;"></div>
+                      <div class="w-full bg-emerald-500/80 hover:bg-emerald-400 transition-all rounded-t" style="height: ${h}%;"></div>
                       <span class="text-[10px] text-slate-400 font-medium">Rev</span>
                     </div>
 
                     <!-- COGS Bar -->
                     <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group relative cursor-pointer">
                       <div class="text-[10px] font-mono text-amber-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity absolute -top-5">
-                        ${m(d.cogs)}
+                        ${x(d.cogs)}
                       </div>
-                      <div class="w-full bg-amber-500/80 hover:bg-amber-400 transition-all rounded-t" style="height: ${h}%;"></div>
+                      <div class="w-full bg-amber-500/80 hover:bg-amber-400 transition-all rounded-t" style="height: ${y}%;"></div>
                       <span class="text-[10px] text-slate-400 font-medium">COGS</span>
                     </div>
 
                     <!-- Payroll Bar -->
                     <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group relative cursor-pointer">
                       <div class="text-[10px] font-mono text-blue-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity absolute -top-5">
-                        ${m(d.payroll)}
+                        ${x(d.payroll)}
                       </div>
-                      <div class="w-full bg-blue-500/80 hover:bg-blue-400 transition-all rounded-t" style="height: ${E}%;"></div>
+                      <div class="w-full bg-blue-500/80 hover:bg-blue-400 transition-all rounded-t" style="height: ${k}%;"></div>
                       <span class="text-[10px] text-slate-400 font-medium">Labor</span>
                     </div>
 
                     <!-- OpEx Bar -->
                     <div class="flex-1 flex flex-col items-center gap-1.5 h-full justify-end group relative cursor-pointer">
                       <div class="text-[10px] font-mono text-purple-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity absolute -top-5">
-                        ${m(d.opex)}
+                        ${x(d.opex)}
                       </div>
-                      <div class="w-full bg-purple-500/80 hover:bg-purple-400 transition-all rounded-t" style="height: ${S}%;"></div>
+                      <div class="w-full bg-purple-500/80 hover:bg-purple-400 transition-all rounded-t" style="height: ${C}%;"></div>
                       <span class="text-[10px] text-slate-400 font-medium">OpEx</span>
                     </div>
                   </div>
 
                   <!-- Quick Stats Below Bar -->
                   <div class="grid grid-cols-2 gap-2 text-[11px] pt-3 text-slate-400 font-mono">
-                    <div>Gross Profit: <span class="text-slate-200 font-semibold">${m(d.gross_profit)}</span></div>
+                    <div>Gross Profit: <span class="text-slate-200 font-semibold">${x(d.gross_profit)}</span></div>
                     <div class="text-right">Gross Margin: <span class="text-emerald-400 font-semibold">${d.gross_margin_pct.toFixed(1)}%</span></div>
                   </div>
                 </div>
@@ -209,62 +241,62 @@
             <thead>
               <tr class="bg-slate-950 border-b border-slate-800">
                 <th class="py-3 px-4 font-semibold text-slate-300 uppercase tracking-wider text-xs">Accounting Category / Account</th>
-                ${c}
+                ${p}
                 <th class="py-3 px-4 text-right font-semibold text-slate-100 uppercase tracking-wider text-xs bg-slate-950">Q1 Total</th>
               </tr>
             </thead>
             <tbody>
               <!-- 1. REVENUE SECTION -->
               <tr class="bg-slate-950 text-emerald-400 font-bold text-xs uppercase tracking-wider border-b border-slate-800">
-                <td colspan="${t.length+2}" class="py-2.5 px-4 flex items-center gap-2">
+                <td colspan="${s.length+2}" class="py-2.5 px-4 flex items-center gap-2">
                   <span>▾</span>
                   <span>1. Operating Revenue (Inflows)</span>
                 </td>
               </tr>
-              ${s(e.revenue_items,"Revenue","bg-emerald-400")}
-              ${o("Total Operating Revenue",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.revenue)||0},()=>e.totals.revenue,"bg-emerald-950/20","text-emerald-300")}
+              ${t(e.revenue_items,"Revenue","bg-emerald-400")}
+              ${r("Total Operating Revenue",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.revenue)||0},()=>e.totals.revenue,"bg-emerald-950/20","text-emerald-300")}
 
               <!-- 2. COGS SECTION -->
               <tr class="bg-slate-950 text-amber-400 font-bold text-xs uppercase tracking-wider border-b border-slate-800 border-t-2 border-slate-800">
-                <td colspan="${t.length+2}" class="py-2.5 px-4 flex items-center gap-2">
+                <td colspan="${s.length+2}" class="py-2.5 px-4 flex items-center gap-2">
                   <span>▾</span>
                   <span>2. Cost of Goods Sold (COGS)</span>
                 </td>
               </tr>
-              ${s(e.cogs_items,"Cost of Goods Sold","bg-amber-400")}
-              ${o("Total Cost of Goods Sold",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.cogs)||0},()=>e.totals.cogs,"bg-slate-800/40","text-slate-300")}
+              ${t(e.cogs_items,"Cost of Goods Sold","bg-amber-400")}
+              ${r("Total Cost of Goods Sold",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.cogs)||0},()=>e.totals.cogs,"bg-slate-800/40","text-slate-300")}
 
               <!-- GROSS PROFIT -->
-              ${o("Gross Profit (Revenue - COGS)",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.gross_profit)||0},()=>e.totals.gross_profit,"bg-slate-800/80","text-white")}
-              ${i("Gross Margin %",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.gross_margin_pct)||0})}
+              ${r("Gross Profit (Revenue - COGS)",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.gross_profit)||0},()=>e.totals.gross_profit,"bg-slate-800/80","text-white")}
+              ${o("Gross Margin %",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.gross_margin_pct)||0})}
 
               <!-- 3. PAYROLL SECTION -->
               <tr class="bg-slate-950 text-blue-400 font-bold text-xs uppercase tracking-wider border-b border-slate-800 border-t-2 border-slate-800">
-                <td colspan="${t.length+2}" class="py-2.5 px-4 flex items-center gap-2">
+                <td colspan="${s.length+2}" class="py-2.5 px-4 flex items-center gap-2">
                   <span>▾</span>
                   <span>3. Labor & Payroll Compensation</span>
                 </td>
               </tr>
-              ${s(e.payroll_items,"Payroll","bg-blue-400")}
-              ${o("Total Payroll & Wages",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.payroll)||0},()=>e.totals.payroll,"bg-slate-800/40","text-slate-300")}
+              ${t(e.payroll_items,"Payroll","bg-blue-400")}
+              ${r("Total Payroll & Wages",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.payroll)||0},()=>e.totals.payroll,"bg-slate-800/40","text-slate-300")}
 
               <!-- 4. OPEX SECTION -->
               <tr class="bg-slate-950 text-purple-400 font-bold text-xs uppercase tracking-wider border-b border-slate-800 border-t-2 border-slate-800">
-                <td colspan="${t.length+2}" class="py-2.5 px-4 flex items-center gap-2">
+                <td colspan="${s.length+2}" class="py-2.5 px-4 flex items-center gap-2">
                   <span>▾</span>
                   <span>4. Operating Expenses (OpEx)</span>
                 </td>
               </tr>
-              ${s(e.opex_items,"Operating Expenses","bg-purple-400")}
-              ${o("Total Operating Expenses",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.opex)||0},()=>e.totals.opex,"bg-slate-800/40","text-slate-300")}
+              ${t(e.opex_items,"Operating Expenses","bg-purple-400")}
+              ${r("Total Operating Expenses",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.opex)||0},()=>e.totals.opex,"bg-slate-800/40","text-slate-300")}
 
               <!-- OPERATING PROFIT (EBITDA) -->
-              ${o("Operating Profit / EBITDA",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.operating_profit)||0},()=>e.totals.operating_profit,"bg-emerald-950/40","text-emerald-400 font-extrabold")}
-              ${i("Operating Margin % (EBITDA Margin)",r=>{var d;return((d=e.monthly_summaries[r])==null?void 0:d.operating_margin_pct)||0})}
+              ${r("Operating Profit / EBITDA",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.operating_profit)||0},()=>e.totals.operating_profit,"bg-emerald-950/40","text-emerald-400 font-extrabold")}
+              ${o("Operating Margin % (EBITDA Margin)",u=>{var d;return((d=e.monthly_summaries[u])==null?void 0:d.operating_margin_pct)||0})}
 
               <!-- NON-P&L / BALANCE SHEET SECTION -->
               <tr class="bg-slate-950 text-slate-400 font-bold text-xs uppercase tracking-wider border-t-4 border-slate-800">
-                <td colspan="${t.length+2}" class="py-2.5 px-4 flex items-center justify-between">
+                <td colspan="${s.length+2}" class="py-2.5 px-4 flex items-center justify-between">
                   <div class="flex items-center gap-2">
                     <span>▾</span>
                     <span>Non-P&L Balance Sheet & Financing Activities</span>
@@ -274,21 +306,31 @@
                   </span>
                 </td>
               </tr>
-              ${s(e.non_pnl_items,"Non-P&L (Balance Sheet)","bg-slate-500")}
+              ${t(e.non_pnl_items,"Non-P&L (Balance Sheet)","bg-slate-500")}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  `}function Ie(e,n,t,c){if(!e.length)return`<div class="p-8 text-center text-slate-400">No variances detected between ${n} and ${t}.</div>`;const s=e.filter(a=>a.is_material),o=e.filter(a=>!a.is_material);function i(a){const u=a.direction==="favorable",p=a.direction==="unfavorable",x=u?"bg-emerald-500/10 text-emerald-400 border-emerald-500/30":p?"bg-rose-500/10 text-rose-400 border-rose-500/30":"bg-slate-700/30 text-slate-300 border-slate-700",b=a.delta_amount>0?"+":"",l=a.top_drivers.slice(0,3).map(r=>`
+  `}function De(e,a,s,p){if(!e||!e.length)return`
+      <div class="border-2 border-dashed border-slate-800 rounded-2xl p-12 text-center bg-slate-900/30 flex flex-col items-center justify-center max-w-xl mx-auto my-8">
+        <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-2xl mb-3 text-indigo-400">
+          📈
+        </div>
+        <h3 class="text-base font-bold text-slate-100">No Variance Analysis Available</h3>
+        <p class="text-xs text-slate-400 mt-1 max-w-sm">
+          Please upload a bank transaction dataset with multiple periods (or click "Load Benchmark" in the top bar) to generate the EBITDA Waterfall Bridge and Driver Decomposition.
+        </p>
+      </div>
+    `;const t=e.filter(n=>n.is_material),r=e.filter(n=>!n.is_material);function o(n){const m=n.direction==="favorable",b=n.direction==="unfavorable",l=m?"bg-emerald-500/10 text-emerald-400 border-emerald-500/30":b?"bg-rose-500/10 text-rose-400 border-rose-500/30":"bg-slate-700/30 text-slate-300 border-slate-700",f=n.delta_amount>0?"+":"",i=n.top_drivers.slice(0,3).map(c=>`
         <li class="text-xs text-slate-300 flex items-start justify-between py-1 border-b border-slate-800/60 last:border-none">
           <div class="flex items-center gap-1.5 truncate pr-2">
-            <span class="font-mono text-[10px] text-slate-400 bg-slate-800 px-1 rounded">${r.transaction_id}</span>
-            <span class="truncate">${r.description}</span>
+            <span class="font-mono text-[10px] text-slate-400 bg-slate-800 px-1 rounded">${c.transaction_id}</span>
+            <span class="truncate">${c.description}</span>
           </div>
           <div class="text-right shrink-0">
-            <span class="font-mono font-medium text-slate-200">${m(r.amount)}</span>
-            <span class="text-[10px] text-slate-500 block">(${r.impact_pct}% of total)</span>
+            <span class="font-mono font-medium text-slate-200">${x(c.amount)}</span>
+            <span class="text-[10px] text-slate-500 block">(${c.impact_pct}% of total)</span>
           </div>
         </li>
       `).join("");return`
@@ -296,44 +338,44 @@
         <div>
           <!-- Header -->
           <div class="flex items-center justify-between gap-2 mb-2">
-            <h4 class="text-sm font-bold text-slate-100 truncate">${a.category}</h4>
-            <span class="px-2 py-0.5 rounded text-[11px] font-semibold uppercase tracking-wider border ${x}">
-              ${a.direction}
+            <h4 class="text-sm font-bold text-slate-100 truncate">${n.category}</h4>
+            <span class="px-2 py-0.5 rounded text-[11px] font-semibold uppercase tracking-wider border ${l}">
+              ${n.direction}
             </span>
           </div>
 
           <!-- Numbers -->
           <div class="grid grid-cols-3 gap-2 my-3 p-3 bg-slate-950/70 rounded-lg border border-slate-800/80">
             <div>
-              <div class="text-[10px] text-slate-400 font-medium">${a.period_a}</div>
-              <div class="text-xs font-mono text-slate-300 font-semibold">${m(a.amount_a)}</div>
+              <div class="text-[10px] text-slate-400 font-medium">${n.period_a}</div>
+              <div class="text-xs font-mono text-slate-300 font-semibold">${x(n.amount_a)}</div>
             </div>
             <div>
-              <div class="text-[10px] text-slate-400 font-medium">${a.period_b}</div>
-              <div class="text-xs font-mono text-slate-300 font-semibold">${m(a.amount_b)}</div>
+              <div class="text-[10px] text-slate-400 font-medium">${n.period_b}</div>
+              <div class="text-xs font-mono text-slate-300 font-semibold">${x(n.amount_b)}</div>
             </div>
             <div class="text-right">
               <div class="text-[10px] text-slate-400 font-medium">Variance (Δ)</div>
-              <div class="text-xs font-mono font-bold ${u?"text-emerald-400":p?"text-rose-400":"text-slate-300"}">
-                ${b}${m(a.delta_amount)} (${X(a.delta_pct)})
+              <div class="text-xs font-mono font-bold ${m?"text-emerald-400":b?"text-rose-400":"text-slate-300"}">
+                ${f}${x(n.delta_amount)} (${re(n.delta_pct)})
               </div>
             </div>
           </div>
 
           <!-- Narrative -->
           <p class="text-xs text-slate-400 mb-4 leading-relaxed">
-            ${a.narrative_explanation}
+            ${n.narrative_explanation}
           </p>
 
           <!-- Top Drivers if available -->
-          ${a.top_drivers.length>0?`
+          ${n.top_drivers.length>0?`
                 <div class="mb-4">
                   <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5 flex items-center justify-between">
-                    <span>Key Contributing Drivers (${a.period_b})</span>
+                    <span>Key Contributing Drivers (${n.period_b})</span>
                     <span class="text-[10px] text-slate-400">Impact %</span>
                   </div>
                   <ul class="bg-slate-950/50 rounded-lg p-2.5 border border-slate-800/60">
-                    ${l}
+                    ${i}
                   </ul>
                 </div>
               `:""}
@@ -342,11 +384,11 @@
         <!-- Action / Evidence Link -->
         <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between">
           <span class="text-[11px] text-slate-400">
-            ${a.supporting_transaction_ids.length} supporting transactions
+            ${n.supporting_transaction_ids.length} supporting transactions
           </span>
           <button
             class="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-all flex items-center gap-1.5 inspect-variance-btn"
-            data-variance-cat="${a.category}">
+            data-variance-cat="${n.category}">
             <span>Inspect Evidence</span>
             <span>→</span>
           </button>
@@ -371,9 +413,9 @@
         <div class="flex items-center gap-3">
           <label class="text-xs text-slate-400 font-medium">Comparison Periods:</label>
           <div class="flex items-center gap-2 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 text-xs">
-            <span class="font-mono text-slate-300 font-semibold">${n}</span>
+            <span class="font-mono text-slate-300 font-semibold">${a}</span>
             <span class="text-slate-500">vs</span>
-            <span class="font-mono text-emerald-400 font-semibold">${t}</span>
+            <span class="font-mono text-emerald-400 font-semibold">${s}</span>
           </div>
         </div>
       </div>
@@ -383,7 +425,7 @@
         <div class="flex flex-wrap items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-800">
           <div>
             <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
-              <span>🌉 EBITDA Variance Waterfall Bridge (${n} → ${t})</span>
+              <span>🌉 EBITDA Variance Waterfall Bridge (${a} → ${s})</span>
               <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                 MoM Profit Walk
               </span>
@@ -404,7 +446,7 @@
           <!-- Step 1: Base Starting EBITDA -->
           <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
             <div class="text-[11px] font-medium text-slate-400">1. Base EBITDA</div>
-            <div class="text-xs font-semibold text-slate-300 mt-0.5">${n} Actual</div>
+            <div class="text-xs font-semibold text-slate-300 mt-0.5">${a} Actual</div>
             <div class="my-4 h-24 flex items-end justify-center">
               <div class="w-12 bg-slate-700/80 rounded-t h-1/4 flex items-center justify-center text-[10px] font-mono text-slate-200"></div>
             </div>
@@ -472,7 +514,7 @@
           <!-- Step 6: Ending EBITDA Pillar -->
           <div class="bg-emerald-950/30 border border-emerald-500/40 rounded-xl p-3 flex flex-col justify-between shadow-lg">
             <div class="text-[11px] font-medium text-emerald-300">6. Ending EBITDA</div>
-            <div class="text-xs font-semibold text-emerald-200 mt-0.5">${t} Actual</div>
+            <div class="text-xs font-semibold text-emerald-200 mt-0.5">${s} Actual</div>
             <div class="my-4 h-24 flex items-end justify-center">
               <div class="w-12 bg-emerald-400 rounded-t h-full flex items-center justify-center text-[10px] font-mono text-slate-950 font-black">
                 38.4k
@@ -490,33 +532,33 @@
         <div class="flex items-center gap-2 mb-3">
           <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
           <h4 class="text-sm font-bold text-slate-200 uppercase tracking-wider">
-            Material Variances Requiring Scrutiny (${s.length})
+            Material Variances Requiring Scrutiny (${t.length})
           </h4>
           <span class="text-xs text-slate-400">(Threshold: ±$1,500 or ±15%)</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          ${s.map(i).join("")}
+          ${t.map(o).join("")}
         </div>
       </div>
 
       <!-- Minor Variances Table (Collapsible) -->
-      ${o.length>0?`
+      ${r.length>0?`
             <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden mt-6">
               <div class="p-3 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
                 <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                  Stable / Non-Material Line Items (${o.length})
+                  Stable / Non-Material Line Items (${r.length})
                 </span>
                 <span class="text-[11px] text-slate-400">Fluctuations within normal tolerances</span>
               </div>
               <div class="divide-y divide-slate-800/60 max-h-60 overflow-y-auto">
-                ${o.map(a=>`
+                ${r.map(n=>`
                       <div class="px-4 py-2.5 flex items-center justify-between text-xs hover:bg-slate-800/40">
-                        <span class="text-slate-300 font-medium">${a.category}</span>
+                        <span class="text-slate-300 font-medium">${n.category}</span>
                         <div class="flex items-center gap-4">
-                          <span class="text-slate-400 font-mono">${m(a.amount_a)} → ${m(a.amount_b)}</span>
-                          <span class="font-mono font-medium ${a.delta_amount>=0?"text-slate-300":"text-slate-400"}">
-                            ${a.delta_amount>=0?"+":""}${m(a.delta_amount)} (${X(a.delta_pct)})
+                          <span class="text-slate-400 font-mono">${x(n.amount_a)} → ${x(n.amount_b)}</span>
+                          <span class="font-mono font-medium ${n.delta_amount>=0?"text-slate-300":"text-slate-400"}">
+                            ${n.delta_amount>=0?"+":""}${x(n.delta_amount)} (${re(n.delta_pct)})
                           </span>
                         </div>
                       </div>
@@ -525,75 +567,85 @@
             </div>
           `:""}
     </div>
-  `}function Se(e,n,t="",c="",s="",o){const i={};e.forEach(l=>{const r=l.transaction.category;i[r]=(i[r]||0)+1});let a=e;if(t&&(a=a.filter(l=>l.transaction.category===t)),c&&(a=a.filter(l=>l.severity===c)),s){const l=s.toLowerCase();a=a.filter(r=>r.transaction.description.toLowerCase().includes(l)||r.transaction.id.toLowerCase().includes(l)||r.transaction.subcategory.toLowerCase().includes(l))}const u=n.map(l=>`<option value="${l}" ${l===t?"selected":""}>${l} (${i[l]||0})</option>`).join(""),p=`
-    <button class="review-cat-pill px-3 py-1 rounded-full text-xs font-medium transition-all ${t===""?"bg-emerald-500/20 text-emerald-300 border border-emerald-500/40":"bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700"}" data-category="">
+  `}function Re(e,a,s="",p="",t="",r){if(!e||!e.length)return`
+      <div class="border-2 border-dashed border-slate-800 rounded-2xl p-12 text-center bg-slate-900/30 flex flex-col items-center justify-center max-w-xl mx-auto my-8">
+        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-2xl mb-3 text-amber-400">
+          ⚠️
+        </div>
+        <h3 class="text-base font-bold text-slate-100">Review Queue is Empty</h3>
+        <p class="text-xs text-slate-400 mt-1 max-w-sm">
+          No transactions currently require human review. Upload a bank transactions CSV to screen for capital asset thresholds, sales tax remittances, and anomalies.
+        </p>
+      </div>
+    `;const o={};e.forEach(i=>{const c=i.transaction.category;o[c]=(o[c]||0)+1});let n=e;if(s&&(n=n.filter(i=>i.transaction.category===s)),p&&(n=n.filter(i=>i.severity===p)),t){const i=t.toLowerCase();n=n.filter(c=>c.transaction.description.toLowerCase().includes(i)||c.transaction.id.toLowerCase().includes(i)||c.transaction.subcategory.toLowerCase().includes(i))}const m=a.map(i=>`<option value="${i}" ${i===s?"selected":""}>${i} (${o[i]||0})</option>`).join(""),b=`
+    <button class="review-cat-pill px-3 py-1 rounded-full text-xs font-medium transition-all ${s===""?"bg-emerald-500/20 text-emerald-300 border border-emerald-500/40":"bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700"}" data-category="">
       All Categories (${e.length})
     </button>
-  `,x=n.filter(l=>(i[l]||0)>0).map(l=>`
-        <button class="review-cat-pill px-3 py-1 rounded-full text-xs font-medium transition-all ${t===l?"bg-emerald-500/20 text-emerald-300 border border-emerald-500/40":"bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700"}" data-category="${l}">
-          ${l} (${i[l]})
+  `,l=a.filter(i=>(o[i]||0)>0).map(i=>`
+        <button class="review-cat-pill px-3 py-1 rounded-full text-xs font-medium transition-all ${s===i?"bg-emerald-500/20 text-emerald-300 border border-emerald-500/40":"bg-slate-800 text-slate-400 hover:text-slate-200 border border-slate-700"}" data-category="${i}">
+          ${i} (${o[i]})
         </button>
-      `).join(""),b=a.length?a.map(l=>{const r=l.transaction,y={low_confidence:"Low Classification Confidence",anomaly_amount:"Unusual Amount Spike",personal_vs_business:"Peer-to-Peer Transfer (Personal vs Business)",unclear_memo:"Unrecorded Check / Missing Memo",capital_vs_opex:"Capitalization Threshold ($2k+ Hardware/Asset)"}[l.flag_type]||l.flag_type;return`
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition-all review-card" data-tx-id="${r.id}">
+      `).join(""),f=n.length?n.map(i=>{const c=i.transaction,j={low_confidence:"Low Classification Confidence",anomaly_amount:"Unusual Amount Spike",personal_vs_business:"Peer-to-Peer Transfer (Personal vs Business)",unclear_memo:"Unrecorded Check / Missing Memo",capital_vs_opex:"Capitalization Threshold ($2k+ Hardware/Asset)"}[i.flag_type]||i.flag_type;return`
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-lg hover:border-slate-700 transition-all review-card" data-tx-id="${c.id}">
               <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <!-- Left: Transaction Info & Flag -->
                 <div class="space-y-1.5 flex-1">
                   <div class="flex flex-wrap items-center gap-2">
-                    <span class="font-mono text-xs text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 font-semibold">${r.id}</span>
-                    <span class="text-xs font-mono text-slate-400">${r.date}</span>
-                    ${Ee(l.severity)}
-                    ${K(r.confidence)}
+                    <span class="font-mono text-xs text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800 font-semibold">${c.id}</span>
+                    <span class="text-xs font-mono text-slate-400">${c.date}</span>
+                    ${je(i.severity)}
+                    ${se(c.confidence)}
                   </div>
 
                   <div class="text-sm font-bold text-slate-100 mt-1">
-                    ${r.description}
+                    ${c.description}
                   </div>
 
                   <div class="text-xs text-slate-400 flex items-center gap-2">
-                    <span>Category: <strong class="text-slate-300 font-medium">${r.category}</strong></span>
+                    <span>Category: <strong class="text-slate-300 font-medium">${c.category}</strong></span>
                     <span>•</span>
-                    <span>Subcategory: <strong class="text-slate-300 font-medium">${r.subcategory}</strong></span>
+                    <span>Subcategory: <strong class="text-slate-300 font-medium">${c.subcategory}</strong></span>
                     <span>•</span>
-                    <span>P&L Status: <strong class="${r.is_pnl?"text-emerald-400":"text-amber-400"}">${r.is_pnl?"Included in P&L":"Non-P&L (Balance Sheet)"}</strong></span>
+                    <span>P&L Status: <strong class="${c.is_pnl?"text-emerald-400":"text-amber-400"}">${c.is_pnl?"Included in P&L":"Non-P&L (Balance Sheet)"}</strong></span>
                   </div>
 
                   <!-- Audit Flag Box -->
                   <div class="mt-2.5 p-2.5 bg-slate-950/80 rounded-lg border border-slate-800/80 text-xs">
                     <div class="font-semibold text-amber-400/90 flex items-center gap-1.5">
                       <span>⚠</span>
-                      <span>${y}</span>
+                      <span>${j}</span>
                     </div>
                     <p class="text-slate-400 mt-0.5 leading-relaxed">
-                      ${l.suggested_action}
+                      ${i.suggested_action}
                     </p>
-                    ${r.review_reason?`<p class="text-[11px] text-slate-500 mt-1 italic">Reason: "${r.review_reason}"</p>`:""}
+                    ${c.review_reason?`<p class="text-[11px] text-slate-500 mt-1 italic">Reason: "${c.review_reason}"</p>`:""}
                   </div>
                 </div>
 
                 <!-- Right: Amount & Actions -->
                 <div class="flex flex-col md:items-end justify-between gap-3 shrink-0">
                   <div class="text-xl font-bold font-mono text-slate-100 md:text-right">
-                    ${m(r.amount)}
-                    <span class="text-[10px] text-slate-400 uppercase font-sans block">${r.type}</span>
+                    ${x(c.amount)}
+                    <span class="text-[10px] text-slate-400 uppercase font-sans block">${c.type}</span>
                   </div>
 
                   <!-- Action Buttons -->
                   <div class="flex flex-wrap items-center gap-2">
                     <button
                       class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition-all approve-btn shadow-sm"
-                      data-tx-id="${r.id}">
+                      data-tx-id="${c.id}">
                       ✓ Approve
                     </button>
 
                     <button
                       class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/40 transition-all reclassify-btn shadow-sm"
-                      data-tx-id="${r.id}">
+                      data-tx-id="${c.id}">
                       ✎ Reclassify
                     </button>
 
                     <button
                       class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all exclude-btn shadow-sm"
-                      data-tx-id="${r.id}">
+                      data-tx-id="${c.id}">
                       Exclude from P&L
                     </button>
                   </div>
@@ -602,7 +654,7 @@
             </div>
           `}).join(""):`
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-10 text-center text-slate-400 text-xs">
-        No flagged review items match your active filters (${t||"All categories"}).
+        No flagged review items match your active filters (${s||"All categories"}).
       </div>
     `;return`
     <div class="space-y-4">
@@ -612,7 +664,7 @@
           <h3 class="text-base font-semibold text-slate-100 flex items-center gap-2">
             Human-in-the-Loop Review Queue
             <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/40">
-              ${a.length} of ${e.length} Items
+              ${n.length} of ${e.length} Items
             </span>
           </h3>
           <p class="text-xs text-slate-400 mt-0.5">
@@ -627,8 +679,8 @@
 
       <!-- Quick Category Pills -->
       <div class="flex flex-wrap items-center gap-2 pb-1">
-        ${p}
-        ${x}
+        ${b}
+        ${l}
       </div>
 
       <!-- Filter Controls Toolbar -->
@@ -639,7 +691,7 @@
             type="text"
             id="review-search-input"
             placeholder="Search flagged item, vendor, or ID..."
-            value="${s}"
+            value="${t}"
             class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
           />
         </div>
@@ -649,7 +701,7 @@
           <label class="text-xs text-slate-400 font-medium whitespace-nowrap">Category:</label>
           <select id="review-category-select" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
             <option value="">All Categories (${e.length})</option>
-            ${u}
+            ${m}
           </select>
         </div>
 
@@ -658,59 +710,63 @@
           <label class="text-xs text-slate-400 font-medium whitespace-nowrap">Severity:</label>
           <select id="review-severity-select" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
             <option value="">All Severities</option>
-            <option value="high" ${c==="high"?"selected":""}>High Attention</option>
-            <option value="medium" ${c==="medium"?"selected":""}>Medium Review</option>
-            <option value="low" ${c==="low"?"selected":""}>Low Judgment</option>
+            <option value="high" ${p==="high"?"selected":""}>High Attention</option>
+            <option value="medium" ${p==="medium"?"selected":""}>Medium Review</option>
+            <option value="low" ${p==="low"?"selected":""}>Low Judgment</option>
           </select>
         </div>
       </div>
 
       <!-- Queue Cards List -->
       <div class="space-y-3">
-        ${b}
+        ${f}
       </div>
     </div>
-  `}function Ae(e,n,t="",c="",s="",o="",i){const a=e.length,u=e.length?e.map(x=>{const b=x.type==="credit",l=x.is_pnl?'<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">P&L</span>':'<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-700/50 text-slate-400 border border-slate-700">Non-P&L</span>',r=x.review_required?'<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">FLAGGED</span>':"";return`
-            <tr class="hover:bg-slate-800/50 transition-colors border-b border-slate-800/50 text-xs cursor-pointer ledger-row" data-tx-id="${x.id}">
-              <td class="py-2.5 px-3 font-mono text-slate-400 font-medium">${x.id}</td>
-              <td class="py-2.5 px-3 font-mono text-slate-300 whitespace-nowrap">${x.date}</td>
+  `}function Oe(e,a,s="",p="",t="",r="",o){const n=e.length,m=e.length?e.map(l=>{const f=l.type==="credit",i=l.is_pnl?'<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">P&L</span>':'<span class="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-700/50 text-slate-400 border border-slate-700">Non-P&L</span>',c=l.review_required?'<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">FLAGGED</span>':"";return`
+            <tr class="hover:bg-slate-800/50 transition-colors border-b border-slate-800/50 text-xs cursor-pointer ledger-row" data-tx-id="${l.id}">
+              <td class="py-2.5 px-3 font-mono text-slate-400 font-medium">${l.id}</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300 whitespace-nowrap">${l.date}</td>
               <td class="py-2.5 px-3 font-medium text-slate-100">
                 <div class="flex items-center gap-2">
-                  <span class="truncate max-w-xs md:max-w-md">${x.description}</span>
-                  ${r}
+                  <span class="truncate max-w-xs md:max-w-md">${l.description}</span>
+                  ${c}
                 </div>
               </td>
               <td class="py-2.5 px-3 whitespace-nowrap text-slate-300">
                 <span class="px-2 py-0.5 rounded-full bg-slate-800 text-[11px] font-medium border border-slate-700">
-                  ${x.category}
+                  ${l.category}
                 </span>
               </td>
-              <td class="py-2.5 px-3 text-slate-400 text-[11px] truncate max-w-[120px]">${x.subcategory}</td>
-              <td class="py-2.5 px-3 text-center">${l}</td>
-              <td class="py-2.5 px-3 text-center">${K(x.confidence)}</td>
-              <td class="py-2.5 px-3 text-right font-mono font-bold ${b?"text-emerald-400":"text-slate-100"} whitespace-nowrap">
-                ${b?"+":"-"}${m(x.amount)}
+              <td class="py-2.5 px-3 text-slate-400 text-[11px] truncate max-w-[120px]">${l.subcategory}</td>
+              <td class="py-2.5 px-3 text-center">${i}</td>
+              <td class="py-2.5 px-3 text-center">${se(l.confidence)}</td>
+              <td class="py-2.5 px-3 text-right font-mono font-bold ${f?"text-emerald-400":"text-slate-100"} whitespace-nowrap">
+                ${f?"+":"-"}${x(l.amount)}
               </td>
               <td class="py-2.5 px-3 text-center">
-                <button class="px-2 py-1 text-[11px] rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 edit-tx-btn" data-tx-id="${x.id}">
+                <button class="px-2 py-1 text-[11px] rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 edit-tx-btn" data-tx-id="${l.id}">
                   Edit
                 </button>
               </td>
             </tr>
           `}).join(""):`
       <tr>
-        <td colspan="9" class="py-8 text-center text-xs text-slate-500">
-          No transactions match your active search and filter criteria.
+        <td colspan="9" class="py-16 text-center text-xs text-slate-500">
+          <div class="flex flex-col items-center justify-center gap-2">
+            <span class="text-3xl">📭</span>
+            <span class="font-semibold text-slate-300 text-sm">No Transactions in Ledger</span>
+            <span class="text-slate-500 max-w-sm">The ledger is empty. Click "Ingest CSV" above or "Load Benchmark" to populate transactions.</span>
+          </div>
         </td>
       </tr>
-    `,p=n.map(x=>`<option value="${x}" ${x===t?"selected":""}>${x}</option>`).join("");return`
+    `,b=a.map(l=>`<option value="${l}" ${l===s?"selected":""}>${l}</option>`).join("");return`
     <div class="space-y-4">
       <!-- Toolbar & Ingestion Header -->
       <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h3 class="text-base font-semibold text-slate-100 flex items-center gap-2">
             Bank Transaction Ledger
-            <span class="text-xs font-normal text-slate-400">(${a} items)</span>
+            <span class="text-xs font-normal text-slate-400">(${n} items)</span>
           </h3>
           <p class="text-xs text-slate-400 mt-0.5">
             Normalized bank entries with automated categorization, reasoning audit trail, and manual correction controls.
@@ -719,14 +775,19 @@
 
         <div class="flex items-center gap-2">
           <!-- Ingest CSV Button -->
-          <label class="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer transition-all flex items-center gap-1.5 shadow-sm">
+          <label class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-600/20">
             <span>↑ Ingest CSV</span>
             <input type="file" id="csv-upload-input" accept=".csv" class="hidden" />
           </label>
 
-          <!-- Reset Benchmark -->
-          <button id="reset-dataset-btn" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all">
-            ↻ Reset Dataset
+          <!-- Load Benchmark Sample -->
+          <button id="load-benchmark-btn" class="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all flex items-center gap-1">
+            <span>↻ Load Benchmark</span>
+          </button>
+
+          <!-- Reset to Blank -->
+          <button id="reset-dataset-btn" title="Clear all data and return to blank ledger" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-rose-950/40 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 transition-all flex items-center gap-1">
+            <span>✕ Reset to Blank</span>
           </button>
         </div>
       </div>
@@ -739,7 +800,7 @@
             type="text"
             id="ledger-search-input"
             placeholder="Search description, ID, or vendor..."
-            value="${o}"
+            value="${r}"
             class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
           />
         </div>
@@ -748,7 +809,7 @@
         <div>
           <select id="ledger-category-select" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500">
             <option value="">All Categories</option>
-            ${p}
+            ${b}
           </select>
         </div>
 
@@ -756,9 +817,9 @@
         <div>
           <select id="ledger-period-select" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500">
             <option value="">All Periods</option>
-            <option value="2026-01" ${c==="2026-01"?"selected":""}>2026-01</option>
-            <option value="2026-02" ${c==="2026-02"?"selected":""}>2026-02</option>
-            <option value="2026-03" ${c==="2026-03"?"selected":""}>2026-03</option>
+            <option value="2026-01" ${p==="2026-01"?"selected":""}>2026-01</option>
+            <option value="2026-02" ${p==="2026-02"?"selected":""}>2026-02</option>
+            <option value="2026-03" ${p==="2026-03"?"selected":""}>2026-03</option>
           </select>
         </div>
 
@@ -766,8 +827,8 @@
         <div>
           <select id="ledger-pnl-select" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500">
             <option value="">All P&L Types</option>
-            <option value="true" ${s==="true"?"selected":""}>P&L Only</option>
-            <option value="false" ${s==="false"?"selected":""}>Non-P&L (Balance Sheet)</option>
+            <option value="true" ${t==="true"?"selected":""}>P&L Only</option>
+            <option value="false" ${t==="false"?"selected":""}>Non-P&L (Balance Sheet)</option>
           </select>
         </div>
       </div>
@@ -790,50 +851,50 @@
               </tr>
             </thead>
             <tbody>
-              ${u}
+              ${m}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-  `}function Te(e,n,t){const s=["What was our revenue in March?","How much did we spend on payroll each month?","Why did operating profit change between February and March?","What drove the increase in food costs?","Which transactions need my attention?","Show me the transactions behind that variance.","What changed most significantly over the review period?"].map(i=>`
+  `}function Me(e,a,s){const t=["What was our revenue in March?","How much did we spend on payroll each month?","Why did operating profit change between February and March?","What drove the increase in food costs?","Which transactions need my attention?","Show me the transactions behind that variance.","What changed most significantly over the review period?"].map(o=>`
         <button
           class="px-2.5 py-1 text-xs rounded-full bg-slate-800 hover:bg-emerald-950/60 hover:text-emerald-300 hover:border-emerald-500/40 text-slate-300 border border-slate-700 transition-all text-left prompt-chip"
-          data-prompt="${i}">
-          ${i}
+          data-prompt="${o}">
+          ${o}
         </button>
-      `).join(""),o=e.map(i=>{const a=i.role==="user",u=a?'<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">You (Executive Reviewer)</span>':`<span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+      `).join(""),r=e.map(o=>{const n=o.role==="user",m=n?'<span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">You (Executive Reviewer)</span>':`<span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             FINZ AI Financial Analyst · Grounded In Deterministic Ledger
-           </span>`;let p="";i.citations&&i.citations.length>0&&(p=`
+           </span>`;let b="";o.citations&&o.citations.length>0&&(b=`
           <div class="mt-3 pt-3 border-t border-slate-800/80">
             <div class="text-[10px] uppercase font-semibold text-slate-400 tracking-wider mb-1.5 flex items-center gap-1">
               <span>Verified Audit Citations (Click to inspect):</span>
             </div>
             <div class="flex flex-wrap gap-2">
-              ${i.citations.map(l=>`
+              ${o.citations.map(i=>`
               <button
                 class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-slate-950 hover:bg-slate-800 border border-slate-700/80 text-emerald-300 hover:text-emerald-200 transition-all shadow-sm citation-btn"
-                data-tx-id="${l.transaction_id}">
-                <span class="text-slate-400 font-bold">${l.transaction_id}</span>
+                data-tx-id="${i.transaction_id}">
+                <span class="text-slate-400 font-bold">${i.transaction_id}</span>
                 <span>•</span>
-                <span class="text-slate-300 truncate max-w-[140px]">${l.description}</span>
+                <span class="text-slate-300 truncate max-w-[140px]">${i.description}</span>
                 <span>•</span>
-                <span class="text-emerald-400 font-bold">${m(l.amount)}</span>
+                <span class="text-emerald-400 font-bold">${x(i.amount)}</span>
                 <span class="text-slate-500">↗</span>
               </button>
             `).join("")}
             </div>
           </div>
-        `);let x=i.content.replace(/\n\n/g,"<br/><br/>").replace(/\n- /g,"<br/>• ").replace(/\n### (.*?)(<br\/>|$)/g,'<h5 class="text-xs font-bold text-slate-100 uppercase tracking-wider mt-2 mb-1">$1</h5>').replace(/\*\*(.*?)\*\*/g,'<strong class="text-slate-100 font-semibold">$1</strong>').replace(/\*(.*?)\*/g,'<em class="text-slate-300">$1</em>');return`
-        <div class="p-4 rounded-xl ${a?"bg-slate-900 border border-slate-800 ml-8":"bg-slate-900/90 border border-emerald-950/80 mr-8"} shadow-md">
+        `);let l=o.content.replace(/\n\n/g,"<br/><br/>").replace(/\n- /g,"<br/>• ").replace(/\n### (.*?)(<br\/>|$)/g,'<h5 class="text-xs font-bold text-slate-100 uppercase tracking-wider mt-2 mb-1">$1</h5>').replace(/\*\*(.*?)\*\*/g,'<strong class="text-slate-100 font-semibold">$1</strong>').replace(/\*(.*?)\*/g,'<em class="text-slate-300">$1</em>');return`
+        <div class="p-4 rounded-xl ${n?"bg-slate-900 border border-slate-800 ml-8":"bg-slate-900/90 border border-emerald-950/80 mr-8"} shadow-md">
           <div class="flex items-center justify-between mb-1.5">
-            ${u}
+            ${m}
           </div>
           <div class="text-xs text-slate-200 leading-relaxed font-sans">
-            ${x}
+            ${l}
           </div>
-          ${p}
+          ${b}
         </div>
       `}).join("");return`
     <div class="space-y-4">
@@ -863,7 +924,7 @@
           <span>Challenge Demonstration Queries (Click any to run):</span>
         </div>
         <div class="flex flex-wrap gap-2">
-          ${s}
+          ${t}
         </div>
       </div>
 
@@ -873,8 +934,8 @@
               <div class="text-center py-16 text-slate-500 text-xs">
                 Select one of the challenge questions above or type your own question below to start the financial review.
               </div>
-            `:o}
-        ${n?`
+            `:r}
+        ${a?`
               <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 mr-8 animate-pulse">
                 <div class="flex items-center gap-2 text-xs text-emerald-400 font-mono">
                   <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
@@ -900,31 +961,31 @@
         </button>
       </div>
     </div>
-  `}let w="pnl",L=null,z=[],ie=[],$=[],T=[],D=!1,B="",P="",j="",O="",F="",Z="",ee="",_=null;const f=document.getElementById("view-container"),Ce=document.getElementById("review-count-badge"),de=document.getElementById("audit-drawer"),N=document.getElementById("drawer-backdrop"),G=document.getElementById("close-drawer-btn"),_e=document.getElementById("drawer-title"),ke=document.getElementById("drawer-subtitle"),H=document.getElementById("drawer-tx-list"),Be=document.getElementById("drawer-total-amount"),ce=document.getElementById("edit-modal"),V=document.getElementById("modal-backdrop"),q=document.getElementById("close-modal-btn"),W=document.getElementById("cancel-modal-btn"),U=document.getElementById("save-modal-btn"),Pe=document.getElementById("modal-tx-desc"),je=document.getElementById("modal-tx-meta"),pe=document.getElementById("modal-cat-select"),xe=document.getElementById("modal-subcat-input"),me=document.getElementById("modal-pnl-select"),ue=document.getElementById("modal-notes-input"),te=document.getElementById("toast"),Oe=document.getElementById("toast-message");function C(e){Oe.textContent=e,te.classList.remove("translate-y-20","opacity-0"),setTimeout(()=>{te.classList.add("translate-y-20","opacity-0")},3500)}async function A(){var e;try{const[n,t,c,s]=await Promise.all([fe(),ge("2026-02","2026-03"),ve(),ye()]);L=n,z=t,ie=c,$=s,Ce.textContent=String(c.length),g()}catch(n){console.error("Failed to load data from backend:",n),f.innerHTML=`
+  `}let w="pnl",I=null,Z=[],fe=[],E=[],B=[],N=!1,D="",R="",O="",M="",V="",oe="",le="",_=null;const g=document.getElementById("view-container"),Fe=document.getElementById("review-count-badge"),ge=document.getElementById("audit-drawer"),H=document.getElementById("drawer-backdrop"),q=document.getElementById("close-drawer-btn"),Ne=document.getElementById("drawer-title"),Ge=document.getElementById("drawer-subtitle"),W=document.getElementById("drawer-tx-list"),Ve=document.getElementById("drawer-total-amount"),ve=document.getElementById("edit-modal"),U=document.getElementById("modal-backdrop"),Q=document.getElementById("close-modal-btn"),z=document.getElementById("cancel-modal-btn"),J=document.getElementById("save-modal-btn"),He=document.getElementById("modal-tx-desc"),qe=document.getElementById("modal-tx-meta"),he=document.getElementById("modal-cat-select"),ye=document.getElementById("modal-subcat-input"),we=document.getElementById("modal-pnl-select"),$e=document.getElementById("modal-notes-input"),ie=document.getElementById("toast"),We=document.getElementById("toast-message");function S(e){We.textContent=e,ie.classList.remove("translate-y-20","opacity-0"),setTimeout(()=>{ie.classList.add("translate-y-20","opacity-0")},3500)}async function A(){var e;try{const[a,s,p,t]=await Promise.all([ke(),Ie("2026-02","2026-03"),Se(),Ae()]);I=a,Z=s,fe=p,E=t,Fe.textContent=String(p.length);const r=document.getElementById("header-status-dot"),o=document.getElementById("header-status-text");r&&o&&(t.length===0?(r.className="w-2 h-2 rounded-full bg-slate-500",o.textContent="Blank Ledger (0 Txs)"):(r.className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse",o.textContent=`Q1 2026 Audit (${t.length} Txs)`)),v()}catch(a){console.error("Failed to load data from backend:",a),g.innerHTML=`
       <div class="p-8 bg-rose-950/40 border border-rose-800 rounded-xl text-center">
         <h3 class="text-sm font-bold text-rose-300">Backend Connection Error</h3>
         <p class="text-xs text-slate-400 mt-1">Make sure the FastAPI server is running on http://localhost:8000.</p>
         <button id="retry-btn" class="mt-4 px-4 py-1.5 text-xs font-semibold rounded bg-rose-600 hover:bg-rose-500 text-white">Retry Connection</button>
       </div>
-    `,(e=document.getElementById("retry-btn"))==null||e.addEventListener("click",A)}}function R(e,n,t){_e.textContent=e,ke.textContent=n;const c=t.reduce((s,o)=>s+o.amount,0);Be.textContent=m(c),t.length?H.innerHTML=t.map(s=>`
+    `,(e=document.getElementById("retry-btn"))==null||e.addEventListener("click",A)}}async function ee(e){try{S("Ingesting and classifying bank transactions...");const a=await Ce(e);S(`Successfully classified ${a.count} transactions!`),await A()}catch(a){console.error(a),alert(`CSV Ingestion error: ${a.message}`)}}async function Ee(){if(confirm("Are you sure you want to clear all transactions and reset to a completely blank ledger?"))try{await Be(),B=[],S("Ledger cleared (0 transactions)."),await A()}catch(e){console.error(e),alert(`Reset error: ${e.message}`)}}async function de(){try{S("Loading NYC Restaurant benchmark dataset (181 Txs)...");const e=await _e();S(`Loaded ${e.count} verified transactions!`),await A()}catch(e){console.error(e),alert(`Failed to load benchmark dataset: ${e.message}`)}}function F(e,a,s){Ne.textContent=e,Ge.textContent=a;const p=s.reduce((t,r)=>t+r.amount,0);Ve.textContent=x(p),s.length?W.innerHTML=s.map(t=>`
           <div class="p-3 bg-slate-950/70 border border-slate-800/80 rounded-lg hover:border-slate-700 transition-all flex items-start justify-between gap-3 text-xs">
             <div class="space-y-1">
               <div class="flex items-center gap-2">
-                <span class="font-mono text-[11px] text-slate-400 font-bold">${s.id}</span>
-                <span class="font-mono text-[11px] text-slate-500">${s.date}</span>
-                ${K(s.confidence)}
+                <span class="font-mono text-[11px] text-slate-400 font-bold">${t.id}</span>
+                <span class="font-mono text-[11px] text-slate-500">${t.date}</span>
+                ${se(t.confidence)}
               </div>
-              <div class="font-semibold text-slate-200">${s.description}</div>
+              <div class="font-semibold text-slate-200">${t.description}</div>
               <div class="text-[11px] text-slate-400">
-                ${s.category} &bull; ${s.subcategory}
+                ${t.category} &bull; ${t.subcategory}
               </div>
-              ${s.reasoning?`<div class="text-[10px] text-slate-500 italic">Audit note: ${s.reasoning}</div>`:""}
+              ${t.reasoning?`<div class="text-[10px] text-slate-500 italic">Audit note: ${t.reasoning}</div>`:""}
             </div>
             <div class="text-right shrink-0">
-              <div class="font-mono font-bold text-slate-100">${m(s.amount)}</div>
-              <button class="mt-2 px-2 py-0.5 text-[10px] rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 drawer-edit-btn" data-tx-id="${s.id}">
+              <div class="font-mono font-bold text-slate-100">${x(t.amount)}</div>
+              <button class="mt-2 px-2 py-0.5 text-[10px] rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 drawer-edit-btn" data-tx-id="${t.id}">
                 Reclassify
               </button>
             </div>
           </div>
-        `).join(""):H.innerHTML='<div class="text-xs text-slate-500 italic p-4">No matching transactions found in active ledger.</div>',de.classList.remove("hidden"),H.querySelectorAll(".drawer-edit-btn").forEach(s=>{s.addEventListener("click",o=>{const i=o.currentTarget.getAttribute("data-tx-id"),a=$.find(u=>u.id===i);a&&(Y(),J(a))})})}function Y(){de.classList.add("hidden")}function J(e){_=e,Pe.textContent=e.description,je.textContent=`${e.id} • ${e.date} • ${m(e.amount)} (${e.type.toUpperCase()})`,pe.value=e.category,xe.value=e.subcategory,me.value=String(e.is_pnl),ue.value="",ce.classList.remove("hidden")}function M(){ce.classList.add("hidden"),_=null}async function Re(){if(!_)return;const e=pe.value,n=xe.value.trim()||"General",t=me.value==="true",c=ue.value.trim();try{await Q(_.id,{category:e,subcategory:n,is_pnl:t,review_required:!1,notes:c||"Updated via manual review modal"}),M(),C(`Transaction ${_.id} reclassified to ${e}. P&L recomputed!`),await A()}catch(s){alert(`Error updating transaction: ${s.message}`)}}function g(){if(!L)return;document.querySelectorAll(".tab-btn").forEach(n=>{n.classList.remove("border-emerald-500","text-emerald-400","font-semibold"),n.classList.add("border-transparent","text-slate-400")});const e=document.getElementById(`tab-${w}`);if(e&&(e.classList.remove("border-transparent","text-slate-400"),e.classList.add("border-emerald-500","text-emerald-400","font-semibold")),w==="pnl")f.innerHTML=Le(L),f.querySelectorAll(".line-item-row").forEach(n=>{n.addEventListener("click",t=>{const c=t.currentTarget.getAttribute("data-item-name"),s=t.currentTarget.getAttribute("data-item-type"),i=[...L.revenue_items,...L.cogs_items,...L.payroll_items,...L.opex_items,...L.non_pnl_items].find(a=>a.name===c&&a.account_type===s);if(i){const a=$.filter(u=>i.transaction_ids.includes(u.id));R(`${i.name} (${i.account_type})`,`${a.length} underlying transactions`,a)}})});else if(w==="variance")f.innerHTML=Ie(z,"2026-02","2026-03"),f.querySelectorAll(".inspect-variance-btn").forEach(n=>{n.addEventListener("click",t=>{const c=t.currentTarget.getAttribute("data-variance-cat"),s=z.find(o=>o.category===c);if(s){const o=$.filter(i=>s.supporting_transaction_ids.includes(i.id));R(`Evidence: ${s.category}`,`${o.length} transactions driving variance of ${m(s.delta_amount)}`,o)}})});else if(w==="review"){const n=["Revenue","Cost of Goods Sold","Payroll","Operating Expenses","Non-P&L (Balance Sheet)"];f.innerHTML=Se(ie,n,F,Z,ee);const t=document.getElementById("review-category-select");t==null||t.addEventListener("change",o=>{F=o.target.value,g()});const c=document.getElementById("review-severity-select");c==null||c.addEventListener("change",o=>{Z=o.target.value,g()});const s=document.getElementById("review-search-input");s==null||s.addEventListener("input",o=>{ee=o.target.value,g()}),f.querySelectorAll(".review-cat-pill").forEach(o=>{o.addEventListener("click",i=>{F=i.currentTarget.getAttribute("data-category")||"",g()})}),f.querySelectorAll(".approve-btn").forEach(o=>{o.addEventListener("click",async i=>{const a=i.currentTarget.getAttribute("data-tx-id");await Q(a,{review_required:!1,notes:"Approved classification"}),C(`Approved ${a}. Status verified.`),await A()})}),f.querySelectorAll(".reclassify-btn").forEach(o=>{o.addEventListener("click",i=>{const a=i.currentTarget.getAttribute("data-tx-id"),u=$.find(p=>p.id===a);u&&J(u)})}),f.querySelectorAll(".exclude-btn").forEach(o=>{o.addEventListener("click",async i=>{const a=i.currentTarget.getAttribute("data-tx-id");await Q(a,{category:"Non-P&L (Balance Sheet)",subcategory:"Internal Transfer",is_pnl:!1,review_required:!1,notes:"Excluded from P&L per accountant decision"}),C(`Excluded ${a} from P&L. Statement recomputed!`),await A()})})}else if(w==="ledger"){const n=["Revenue","Cost of Goods Sold","Payroll","Operating Expenses","Non-P&L (Balance Sheet)"];let t=$;if(B&&(t=t.filter(p=>p.category===B)),P&&(t=t.filter(p=>p.date.startsWith(P))),j!==""&&(t=t.filter(p=>String(p.is_pnl)===j)),O){const p=O.toLowerCase();t=t.filter(x=>x.description.toLowerCase().includes(p)||x.id.toLowerCase().includes(p))}f.innerHTML=Ae(t,n,B,P,j,O);const c=document.getElementById("ledger-search-input");c==null||c.addEventListener("input",p=>{O=p.target.value,g()});const s=document.getElementById("ledger-category-select");s==null||s.addEventListener("change",p=>{B=p.target.value,g()});const o=document.getElementById("ledger-period-select");o==null||o.addEventListener("change",p=>{P=p.target.value,g()});const i=document.getElementById("ledger-pnl-select");i==null||i.addEventListener("change",p=>{j=p.target.value,g()});const a=document.getElementById("csv-upload-input");a==null||a.addEventListener("change",async p=>{var b;const x=(b=p.target.files)==null?void 0:b[0];if(x)try{const l=await we(x);C(l.message),await A()}catch(l){alert(`CSV Ingestion error: ${l.message}`)}});const u=document.getElementById("reset-dataset-btn");u==null||u.addEventListener("click",async()=>{confirm("Reset ledger back to original benchmark dataset?")&&(await $e(),C("Ledger reset to benchmark data."),await A())}),f.querySelectorAll(".edit-tx-btn").forEach(p=>{p.addEventListener("click",x=>{x.stopPropagation();const b=x.currentTarget.getAttribute("data-tx-id"),l=$.find(r=>r.id===b);l&&J(l)})}),f.querySelectorAll(".ledger-row").forEach(p=>{p.addEventListener("click",x=>{const b=x.currentTarget.getAttribute("data-tx-id"),l=$.find(r=>r.id===b);l&&R(`Transaction Details: ${l.id}`,l.description,[l])})})}else if(w==="analyst"){f.innerHTML=Te(T,D),f.querySelectorAll(".prompt-chip").forEach(s=>{s.addEventListener("click",async o=>{const i=o.currentTarget.getAttribute("data-prompt");await se(i)})}),f.querySelectorAll(".citation-btn").forEach(s=>{s.addEventListener("click",o=>{const i=o.currentTarget.getAttribute("data-tx-id"),a=$.find(u=>u.id===i);a&&R(`Evidence: ${a.id}`,a.description,[a])})});const n=document.getElementById("analyst-input"),t=document.getElementById("analyst-send-btn"),c=async()=>{const s=n.value.trim();!s||D||(n.value="",await se(s))};t==null||t.addEventListener("click",c),n==null||n.addEventListener("keydown",s=>{s.key==="Enter"&&c()})}}async function se(e){T.push({role:"user",content:e}),D=!0,g();try{const n=await he(e,T);T.push({role:"assistant",content:n.answer,citations:n.citations})}catch(n){T.push({role:"assistant",content:`*Error querying financial analyst: ${n.message}. Please check that the backend is running.*`})}finally{D=!1,g();const n=document.getElementById("chat-messages-container");n&&(n.scrollTop=n.scrollHeight)}}var ae;(ae=document.getElementById("tab-pnl"))==null||ae.addEventListener("click",()=>{w="pnl",g()});var ne;(ne=document.getElementById("tab-variance"))==null||ne.addEventListener("click",()=>{w="variance",g()});var re;(re=document.getElementById("tab-review"))==null||re.addEventListener("click",()=>{w="review",g()});var oe;(oe=document.getElementById("tab-ledger"))==null||oe.addEventListener("click",()=>{w="ledger",g()});var le;(le=document.getElementById("tab-analyst"))==null||le.addEventListener("click",()=>{w="analyst",g()});G==null||G.addEventListener("click",Y);N==null||N.addEventListener("click",Y);q==null||q.addEventListener("click",M);W==null||W.addEventListener("click",M);V==null||V.addEventListener("click",M);U==null||U.addEventListener("click",Re);A();
+        `).join(""):W.innerHTML='<div class="text-xs text-slate-500 italic p-4">No matching transactions found in active ledger.</div>',ge.classList.remove("hidden"),W.querySelectorAll(".drawer-edit-btn").forEach(t=>{t.addEventListener("click",r=>{const o=r.currentTarget.getAttribute("data-tx-id"),n=E.find(m=>m.id===o);n&&(ae(),te(n))})})}function ae(){ge.classList.add("hidden")}function te(e){_=e,He.textContent=e.description,qe.textContent=`${e.id} • ${e.date} • ${x(e.amount)} (${e.type.toUpperCase()})`,he.value=e.category,ye.value=e.subcategory,we.value=String(e.is_pnl),$e.value="",ve.classList.remove("hidden")}function G(){ve.classList.add("hidden"),_=null}async function Ue(){if(!_)return;const e=he.value,a=ye.value.trim()||"General",s=we.value==="true",p=$e.value.trim();try{await X(_.id,{category:e,subcategory:a,is_pnl:s,review_required:!1,notes:p||"Updated via manual review modal"}),G(),S(`Transaction ${_.id} reclassified to ${e}. P&L recomputed!`),await A()}catch(t){alert(`Error updating transaction: ${t.message}`)}}function v(){if(!I)return;document.querySelectorAll(".tab-btn").forEach(a=>{a.classList.remove("border-emerald-500","text-emerald-400","font-semibold"),a.classList.add("border-transparent","text-slate-400")});const e=document.getElementById(`tab-${w}`);if(e&&(e.classList.remove("border-transparent","text-slate-400"),e.classList.add("border-emerald-500","text-emerald-400","font-semibold")),w==="pnl"){g.innerHTML=Pe(I);const a=document.getElementById("pnl-csv-upload-input");a==null||a.addEventListener("change",p=>{var r;const t=(r=p.target.files)==null?void 0:r[0];t&&ee(t)});const s=document.getElementById("pnl-load-benchmark-btn");s==null||s.addEventListener("click",de),g.querySelectorAll(".line-item-row").forEach(p=>{p.addEventListener("click",t=>{const r=t.currentTarget.getAttribute("data-item-name"),o=t.currentTarget.getAttribute("data-item-type"),m=[...I.revenue_items,...I.cogs_items,...I.payroll_items,...I.opex_items,...I.non_pnl_items].find(b=>b.name===r&&b.account_type===o);if(m){const b=E.filter(l=>m.transaction_ids.includes(l.id));F(`${m.name} (${m.account_type})`,`${b.length} underlying transactions`,b)}})})}else if(w==="variance")g.innerHTML=De(Z,"2026-02","2026-03"),g.querySelectorAll(".inspect-variance-btn").forEach(a=>{a.addEventListener("click",s=>{const p=s.currentTarget.getAttribute("data-variance-cat"),t=Z.find(r=>r.category===p);if(t){const r=E.filter(o=>t.supporting_transaction_ids.includes(o.id));F(`Evidence: ${t.category}`,`${r.length} transactions driving variance of ${x(t.delta_amount)}`,r)}})});else if(w==="review"){const a=["Revenue","Cost of Goods Sold","Payroll","Operating Expenses","Non-P&L (Balance Sheet)"];g.innerHTML=Re(fe,a,V,oe,le);const s=document.getElementById("review-category-select");s==null||s.addEventListener("change",r=>{V=r.target.value,v()});const p=document.getElementById("review-severity-select");p==null||p.addEventListener("change",r=>{oe=r.target.value,v()});const t=document.getElementById("review-search-input");t==null||t.addEventListener("input",r=>{le=r.target.value,v()}),g.querySelectorAll(".review-cat-pill").forEach(r=>{r.addEventListener("click",o=>{V=o.currentTarget.getAttribute("data-category")||"",v()})}),g.querySelectorAll(".approve-btn").forEach(r=>{r.addEventListener("click",async o=>{const n=o.currentTarget.getAttribute("data-tx-id");await X(n,{review_required:!1,notes:"Approved classification"}),S(`Approved ${n}. Status verified.`),await A()})}),g.querySelectorAll(".reclassify-btn").forEach(r=>{r.addEventListener("click",o=>{const n=o.currentTarget.getAttribute("data-tx-id"),m=E.find(b=>b.id===n);m&&te(m)})}),g.querySelectorAll(".exclude-btn").forEach(r=>{r.addEventListener("click",async o=>{const n=o.currentTarget.getAttribute("data-tx-id");await X(n,{category:"Non-P&L (Balance Sheet)",subcategory:"Internal Transfer",is_pnl:!1,review_required:!1,notes:"Excluded from P&L per accountant decision"}),S(`Excluded ${n} from P&L. Statement recomputed!`),await A()})})}else if(w==="ledger"){const a=["Revenue","Cost of Goods Sold","Payroll","Operating Expenses","Non-P&L (Balance Sheet)"];let s=E;if(D&&(s=s.filter(l=>l.category===D)),R&&(s=s.filter(l=>l.date.startsWith(R))),O!==""&&(s=s.filter(l=>String(l.is_pnl)===O)),M){const l=M.toLowerCase();s=s.filter(f=>f.description.toLowerCase().includes(l)||f.id.toLowerCase().includes(l))}g.innerHTML=Oe(s,a,D,R,O,M);const p=document.getElementById("ledger-search-input");p==null||p.addEventListener("input",l=>{M=l.target.value,v()});const t=document.getElementById("ledger-category-select");t==null||t.addEventListener("change",l=>{D=l.target.value,v()});const r=document.getElementById("ledger-period-select");r==null||r.addEventListener("change",l=>{R=l.target.value,v()});const o=document.getElementById("ledger-pnl-select");o==null||o.addEventListener("change",l=>{O=l.target.value,v()});const n=document.getElementById("csv-upload-input");n==null||n.addEventListener("change",l=>{var i;const f=(i=l.target.files)==null?void 0:i[0];f&&ee(f)});const m=document.getElementById("reset-dataset-btn");m==null||m.addEventListener("click",Ee);const b=document.getElementById("load-benchmark-btn");b==null||b.addEventListener("click",de),g.querySelectorAll(".edit-tx-btn").forEach(l=>{l.addEventListener("click",f=>{f.stopPropagation();const i=f.currentTarget.getAttribute("data-tx-id"),c=E.find(T=>T.id===i);c&&te(c)})}),g.querySelectorAll(".ledger-row").forEach(l=>{l.addEventListener("click",f=>{const i=f.currentTarget.getAttribute("data-tx-id"),c=E.find(T=>T.id===i);c&&F(`Transaction Details: ${c.id}`,c.description,[c])})})}else if(w==="analyst"){g.innerHTML=Me(B,N),g.querySelectorAll(".prompt-chip").forEach(t=>{t.addEventListener("click",async r=>{const o=r.currentTarget.getAttribute("data-prompt");await ce(o)})}),g.querySelectorAll(".citation-btn").forEach(t=>{t.addEventListener("click",r=>{const o=r.currentTarget.getAttribute("data-tx-id"),n=E.find(m=>m.id===o);n&&F(`Evidence: ${n.id}`,n.description,[n])})});const a=document.getElementById("analyst-input"),s=document.getElementById("analyst-send-btn"),p=async()=>{const t=a.value.trim();!t||N||(a.value="",await ce(t))};s==null||s.addEventListener("click",p),a==null||a.addEventListener("keydown",t=>{t.key==="Enter"&&p()})}}async function ce(e){B.push({role:"user",content:e}),N=!0,v();try{const a=await Te(e,B);B.push({role:"assistant",content:a.answer,citations:a.citations})}catch(a){B.push({role:"assistant",content:`*Error querying financial analyst: ${a.message}. Please check that the backend is running.*`})}finally{N=!1,v();const a=document.getElementById("chat-messages-container");a&&(a.scrollTop=a.scrollHeight)}}var pe;(pe=document.getElementById("tab-pnl"))==null||pe.addEventListener("click",()=>{w="pnl",v()});var xe;(xe=document.getElementById("tab-variance"))==null||xe.addEventListener("click",()=>{w="variance",v()});var me;(me=document.getElementById("tab-review"))==null||me.addEventListener("click",()=>{w="review",v()});var ue;(ue=document.getElementById("tab-ledger"))==null||ue.addEventListener("click",()=>{w="ledger",v()});var be;(be=document.getElementById("tab-analyst"))==null||be.addEventListener("click",()=>{w="analyst",v()});q==null||q.addEventListener("click",ae);H==null||H.addEventListener("click",ae);Q==null||Q.addEventListener("click",G);z==null||z.addEventListener("click",G);U==null||U.addEventListener("click",G);J==null||J.addEventListener("click",Ue);const Y=document.getElementById("global-csv-input");Y==null||Y.addEventListener("change",e=>{var s;const a=(s=e.target.files)==null?void 0:s[0];a&&ee(a)});const K=document.getElementById("global-reset-btn");K==null||K.addEventListener("click",Ee);A();

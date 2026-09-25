@@ -15,6 +15,20 @@ export function renderReviewQueueView(
   searchTerm = '',
   onResolveItem: (txId: string, action: 'approve' | 'reclassify' | 'exclude', tx: Transaction) => void
 ): string {
+  if (!items || !items.length) {
+    return `
+      <div class="border-2 border-dashed border-slate-800 rounded-2xl p-12 text-center bg-slate-900/30 flex flex-col items-center justify-center max-w-xl mx-auto my-8">
+        <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-2xl mb-3 text-amber-400">
+          ⚠️
+        </div>
+        <h3 class="text-base font-bold text-slate-100">Review Queue is Empty</h3>
+        <p class="text-xs text-slate-400 mt-1 max-w-sm">
+          No transactions currently require human review. Upload a bank transactions CSV to screen for capital asset thresholds, sales tax remittances, and anomalies.
+        </p>
+      </div>
+    `;
+  }
+
   // Category counts
   const categoryCounts: Record<string, number> = {};
   items.forEach(it => {

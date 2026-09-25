@@ -67,8 +67,8 @@ def load_transactions_from_csv(filepath: str):
     transactions_db = txs
     print(f"Loaded {len(transactions_db)} transactions into active ledger.")
 
-# Initial load
-load_transactions_from_csv(DATA_FILE)
+# Start with an empty ledger by default (user uploads CSV or loads sample)
+transactions_db = []
 
 # --- REST Endpoints ---
 
@@ -264,10 +264,17 @@ async def upload_csv_file(file: UploadFile = File(...)):
     }
 
 @app.post("/api/reset")
-def reset_to_benchmark():
-    """Resets transactions to the original benchmark dataset."""
+def reset_to_blank():
+    """Resets transactions to a completely blank ledger (0 transactions)."""
+    global transactions_db
+    transactions_db = []
+    return {"message": "Ledger reset to blank state (0 transactions)", "count": 0}
+
+@app.post("/api/benchmark")
+def load_benchmark():
+    """Loads the NYC Restaurant Co. 181-transaction benchmark dataset."""
     load_transactions_from_csv(DATA_FILE)
-    return {"message": "Reset to verified benchmark dataset", "count": len(transactions_db)}
+    return {"message": "Loaded NYC Restaurant Co. benchmark dataset", "count": len(transactions_db)}
 
 # Serve frontend build if exists
 FRONTEND_DIST = os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist")

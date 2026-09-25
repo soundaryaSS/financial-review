@@ -34,11 +34,24 @@
           </div>
         </div>
 
-        <!-- Right Side: Clean Active Workspace Pill -->
-        <div class="hidden md:flex items-center gap-2.5">
-          <div class="flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-lg border border-slate-800/80 text-xs">
-            <span class="text-slate-400">Active Review:</span>
-            <span class="text-slate-200 font-semibold font-mono">Q1 2026 Audit (Jan - Mar)</span>
+        <!-- Right Side: Ingestion Controls & Dynamic Ledger Status -->
+        <div class="flex items-center gap-2.5">
+          <!-- Global Upload CSV Button -->
+          <label class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-600/20">
+            <span>↑ Upload CSV</span>
+            <input type="file" id="global-csv-input" accept=".csv" class="hidden" />
+          </label>
+
+          <!-- Global Reset to Blank Button -->
+          <button id="global-reset-btn" title="Clear all data and return to blank ledger" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-rose-950/60 hover:text-rose-300 text-slate-300 border border-slate-700 transition-all flex items-center gap-1">
+            <span>✕ Reset</span>
+          </button>
+
+          <!-- Status Indicator Pill -->
+          <div class="hidden md:flex items-center gap-2 bg-slate-900/90 px-3.5 py-1.5 rounded-lg border border-slate-800/80 text-xs">
+            <span id="header-status-dot" class="w-2 h-2 rounded-full bg-slate-500"></span>
+            <span class="text-slate-400">Status:</span>
+            <span id="header-status-text" class="text-slate-200 font-semibold font-mono">Blank Ledger (0 Txs)</span>
           </div>
         </div>
       </div>

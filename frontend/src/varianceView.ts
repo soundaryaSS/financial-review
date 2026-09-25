@@ -12,8 +12,18 @@ export function renderVarianceView(
   periodB: string,
   onInspectVarianceDrivers: (v: VarianceAnalysis) => void
 ): string {
-  if (!variances.length) {
-    return `<div class="p-8 text-center text-slate-400">No variances detected between ${periodA} and ${periodB}.</div>`;
+  if (!variances || !variances.length) {
+    return `
+      <div class="border-2 border-dashed border-slate-800 rounded-2xl p-12 text-center bg-slate-900/30 flex flex-col items-center justify-center max-w-xl mx-auto my-8">
+        <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-2xl mb-3 text-indigo-400">
+          📈
+        </div>
+        <h3 class="text-base font-bold text-slate-100">No Variance Analysis Available</h3>
+        <p class="text-xs text-slate-400 mt-1 max-w-sm">
+          Please upload a bank transaction dataset with multiple periods (or click "Load Benchmark" in the top bar) to generate the EBITDA Waterfall Bridge and Driver Decomposition.
+        </p>
+      </div>
+    `;
   }
 
   // Filter into material vs minor

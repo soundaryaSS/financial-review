@@ -11,7 +11,8 @@ import {
   updateTransaction,
   askFinancialAnalyst,
   uploadTransactionsCSV,
-  resetBenchmarkDataset
+  resetBenchmarkDataset,
+  loadBenchmarkDataset
 } from './api';
 
 import {
@@ -106,6 +107,20 @@ async function loadAllData() {
     allTransactions = txs;
 
     reviewCountBadge.textContent = String(queue.length);
+
+    // Update dynamic header status
+    const statusDot = document.getElementById('header-status-dot');
+    const statusText = document.getElementById('header-status-text');
+    if (statusDot && statusText) {
+      if (txs.length === 0) {
+        statusDot.className = 'w-2 h-2 rounded-full bg-slate-500';
+        statusText.textContent = 'Blank Ledger (0 Txs)';
+      } else {
+        statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        statusText.textContent = `Q1 2026 Audit (${txs.length} Txs)`;
+      }
+    }
+
     renderCurrentTab();
   } catch (err: any) {
     console.error('Failed to load data from backend:', err);
@@ -117,6 +132,45 @@ async function loadAllData() {
       </div>
     `;
     document.getElementById('retry-btn')?.addEventListener('click', loadAllData);
+  }
+}
+
+// Ingestion and Reset Handlers
+async function handleFileUpload(file: File) {
+  try {
+    showToast('Ingesting and classifying bank transactions...');
+    const res = await uploadTransactionsCSV(file);
+    showToast(`Successfully classified ${res.count} transactions!`);
+    await loadAllData();
+  } catch (err: any) {
+    console.error(err);
+    alert(`CSV Ingestion error: ${err.message}`);
+  }
+}
+
+async function handleResetToBlank() {
+  if (confirm('Are you sure you want to clear all transactions and reset to a completely blank ledger?')) {
+    try {
+      await resetBenchmarkDataset();
+      chatHistory = [];
+      showToast('Ledger cleared (0 transactions).');
+      await loadAllData();
+    } catch (err: any) {
+      console.error(err);
+      alert(`Reset error: ${err.message}`);
+    }
+  }
+}
+
+async function handleLoadBenchmark() {
+  try {
+    showToast('Loading NYC Restaurant benchmark dataset (181 Txs)...');
+    const res = await loadBenchmarkDataset();
+    showToast(`Loaded ${res.count} verified transactions!`);
+    await loadAllData();
+  } catch (err: any) {
+    console.error(err);
+    alert(`Failed to load benchmark dataset: ${err.message}`);
   }
 }
 
@@ -244,6 +298,15 @@ function renderCurrentTab() {
       const txs = allTransactions.filter(t => item.transaction_ids.includes(t.id));
       openAuditDrawer(`${item.name} (${item.account_type})`, `${txs.length} transactions totaling ${formatCurrency(item.total_amount)}`, txs);
     });
+
+    const pnlUpload = document.getElementById('pnl-csv-upload-input') as HTMLInputElement;
+    pnlUpload?.addEventListener('change', e => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) handleFileUpload(file);
+    });
+
+    const pnlBenchmarkBtn = document.getElementById('pnl-load-benchmark-btn');
+    pnlBenchmarkBtn?.addEventListener('click', handleLoadBenchmark);
 
     // Wire line item click listeners
     viewContainer.querySelectorAll('.line-item-row').forEach(row => {
@@ -420,27 +483,16 @@ function renderCurrentTab() {
     });
 
     const uploadInput = document.getElementById('csv-upload-input') as HTMLInputElement;
-    uploadInput?.addEventListener('change', async e => {
+    uploadInput?.addEventListener('change', e => {
       const file = (e.target as HTMLInputElement).files?.[0];
-      if (file) {
-        try {
-          const res = await uploadTransactionsCSV(file);
-          showToast(res.message);
-          await loadAllData();
-        } catch (err: any) {
-          alert(`CSV Ingestion error: ${err.message}`);
-        }
-      }
+      if (file) handleFileUpload(file);
     });
 
     const resetBtn = document.getElementById('reset-dataset-btn');
-    resetBtn?.addEventListener('click', async () => {
-      if (confirm('Reset ledger back to original benchmark dataset?')) {
-        await resetBenchmarkDataset();
-        showToast('Ledger reset to benchmark data.');
-        await loadAllData();
-      }
-    });
+    resetBtn?.addEventListener('click', handleResetToBlank);
+
+    const benchmarkBtn = document.getElementById('load-benchmark-btn');
+    benchmarkBtn?.addEventListener('click', handleLoadBenchmark);
 
     viewContainer.querySelectorAll('.edit-tx-btn').forEach(btn => {
       btn.addEventListener('click', e => {
@@ -563,6 +615,16 @@ closeModalBtn?.addEventListener('click', closeModal);
 cancelModalBtn?.addEventListener('click', closeModal);
 modalBackdrop?.addEventListener('click', closeModal);
 saveModalBtn?.addEventListener('click', handleSaveReclassification);
+
+// Global Header Ingestion and Reset Listeners
+const globalCsvInput = document.getElementById('global-csv-input') as HTMLInputElement;
+globalCsvInput?.addEventListener('change', e => {
+  const file = (e.target as HTMLInputElement).files?.[0];
+  if (file) handleFileUpload(file);
+});
+
+const globalResetBtn = document.getElementById('global-reset-btn');
+globalResetBtn?.addEventListener('click', handleResetToBlank);
 
 // Boot
 loadAllData();
